@@ -55,6 +55,10 @@ namespace TheGiraffeGame
                 {
                     if (GiraffesHeadVar.Row == i)
                     {
+                        if (screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row + 1]=='#') {//checks if the head of the giraffe is hit by a particle
+                            isHit = true;
+                            break;
+                        }
                         screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = emptySpace;
                         screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row+1] = giraffeHeadChar;
                     }
@@ -88,6 +92,7 @@ namespace TheGiraffeGame
         public static GiraffesHead GiraffesHeadVar = new GiraffesHead(20, 5);
         private static int rows = 60;
         private static int columns = 20;
+        public static bool isHit = false;
 
         static void Main()
         {
@@ -119,6 +124,10 @@ namespace TheGiraffeGame
                 }
                 PrintMatrix(Screen);
                 particleMove(Screen);
+                if (isHit) {
+                    Console.WriteLine("Game over");
+                    break;
+                }
                 Thread.Sleep(250);
             }
             
