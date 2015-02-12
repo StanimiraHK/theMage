@@ -17,20 +17,20 @@ namespace TheGiraffeGame
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (GiraffesHeadVar.Col > 0)
+                    if (GiraffesHeadVar.Row > 0)
                     {
-                        Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row+1] = emptySpace;
-                        Screen[GiraffesHeadVar.Col - 1, GiraffesHeadVar.Row+1] = giraffeHeadChar;
-                        GiraffesHeadVar.Col--;
+                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col+1] = emptySpace;
+                        Screen[GiraffesHeadVar.Row - 1, GiraffesHeadVar.Col+1] = giraffeHeadChar;
+                        GiraffesHeadVar.Row--;
                     }
                     break;
 
                 case ConsoleKey.DownArrow:
-                    if (GiraffesHeadVar.Col < columns - 1)
+                    if (GiraffesHeadVar.Row < rows - 1)
                     {
-                        Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row+1] = emptySpace;
-                        Screen[GiraffesHeadVar.Col + 1, GiraffesHeadVar.Row+1] = giraffeHeadChar;
-                        GiraffesHeadVar.Col++;
+                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col+1] = emptySpace;
+                        Screen[GiraffesHeadVar.Row + 1, GiraffesHeadVar.Col+1] = giraffeHeadChar;
+                        GiraffesHeadVar.Row++;
                     } break;
                 default:
                     break;
@@ -44,32 +44,32 @@ namespace TheGiraffeGame
             char particleChar = '#';
 
             Random numGenerator = new Random();
-            int particleY = numGenerator.Next(0, columns);
+            int particleY = numGenerator.Next(0, rows);
             int particleX = screen.GetLength(1);
 
-            for (int col = 0; col < columns; col++)
+            for (int row = 0; row < rows; row++)
             {
                 char[] buffer = new char[rows];
 
-                for (int i = 0; i < rows-1; i++)
+                for (int i = 0; i < columns-1; i++)
                 {
-                    if (GiraffesHeadVar.Row == i)
+                    if (GiraffesHeadVar.Col == i)
                     {
-                        if (screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row + 1]=='#') {//checks if the head of the giraffe is hit by a particle
+                        if (screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1]=='#') {//checks if the head of the giraffe is hit by a particle
                             isHit = true;
                             break;
                         }
-                        screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = emptySpace;
-                        screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row+1] = giraffeHeadChar;
+                        screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col] = emptySpace;
+                        screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col+1] = giraffeHeadChar;
                     }
-                    screen[col,i] = screen[col, i + 1];
+                    screen[row,i] = screen[row, i + 1];
                 }
-                if (particleX == rows && particleY == col)
+                if (particleX == columns && particleY == row)
                 {
-                    screen[col, rows - 1] = particleChar;
+                    screen[row, columns - 1] = particleChar;
                 }
                 else {
-                    screen[col, rows - 1] = ' ';
+                    screen[row, columns - 1] = ' ';
                 }
                 
             }
@@ -77,11 +77,11 @@ namespace TheGiraffeGame
 
         private static void PrintMatrix(char[,] screen)
         {
-            for (int col = 0; col < columns; col++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int row = 0; row < rows; row++)
+                for (int col = 0; col < columns; col++)
                 {
-                    Console.Write(screen[col, row]);
+                    Console.Write(screen[row, col]);
                 }
                 Console.WriteLine();
             }
@@ -89,25 +89,25 @@ namespace TheGiraffeGame
 
         public static char[,] Screen;
 
-        public static GiraffesHead GiraffesHeadVar = new GiraffesHead(20, 5);
-        private static int rows = 60;
-        private static int columns = 20;
+        public static GiraffesHead GiraffesHeadVar = new GiraffesHead(5, 20);
+        private static int rows = 20;
+        private static int columns = 60;
         public static bool isHit = false;
 
         static void Main()
         {
-            Screen = new Char[columns, rows];
+            Screen = new Char[rows, columns];
 
 
-            for (int col = 0; col < columns; col++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int row = 0; row < rows; row++)
+                for (int col = 0; col < columns; col++)
                 {
-                    Screen[col, row] = ' ';
+                    Screen[row, col] = ' ';
                 }
             }
 
-            Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = '@';
+            Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col] = '@';
             //lolo
             while (true) 
             {
