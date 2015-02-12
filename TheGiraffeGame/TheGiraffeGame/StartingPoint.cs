@@ -19,18 +19,22 @@ namespace TheGiraffeGame
                 case ConsoleKey.UpArrow:
                     if (GiraffesHeadVar.Row > 0)
                     {
-                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col+1] = emptySpace;
-                        Screen[GiraffesHeadVar.Row - 1, GiraffesHeadVar.Col+1] = giraffeHeadChar;
                         GiraffesHeadVar.Row--;
+                        Screen[GiraffesHeadVar.Row + 1, GiraffesHeadVar.Col] = emptySpace;//clearing heads last position if its next to a border
+                        Screen[GiraffesHeadVar.Row + 1, GiraffesHeadVar.Col + 1] = emptySpace;//clearing the heads last position
+                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] = giraffeHeadChar;
+
                     }
                     break;
 
                 case ConsoleKey.DownArrow:
                     if (GiraffesHeadVar.Row < rows - 1)
                     {
-                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col+1] = emptySpace;
-                        Screen[GiraffesHeadVar.Row + 1, GiraffesHeadVar.Col+1] = giraffeHeadChar;
                         GiraffesHeadVar.Row++;
+                        Screen[GiraffesHeadVar.Row - 1, GiraffesHeadVar.Col] = emptySpace;//clearing heads last position if its next to a border
+                        Screen[GiraffesHeadVar.Row - 1, GiraffesHeadVar.Col + 1] = emptySpace;//clearing heads last position
+                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] = giraffeHeadChar;
+
                     } break;
                 default:
                     break;
@@ -49,29 +53,29 @@ namespace TheGiraffeGame
 
             for (int row = 0; row < rows; row++)
             {
-                char[] buffer = new char[rows];
-
-                for (int i = 0; i < columns-1; i++)
+                for (int i = 0; i < columns - 1; i++)
                 {
                     if (GiraffesHeadVar.Col == i)
                     {
-                        if (screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1]=='#') {//checks if the head of the giraffe is hit by a particle
+                        if (screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] == '#')
+                        {//checks if the head of the giraffe is hit by a particle
                             isHit = true;
                             break;
                         }
                         screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col] = emptySpace;
-                        screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col+1] = giraffeHeadChar;
+                        screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] = giraffeHeadChar;
                     }
-                    screen[row,i] = screen[row, i + 1];
+                    screen[row, i] = screen[row, i + 1];//shifting the array on every row one index left example: {0,1,2,3,4} becomes {1,2,3,4,4}
                 }
                 if (particleX == columns && particleY == row)
                 {
-                    screen[row, columns - 1] = particleChar;
+                    screen[row, columns - 1] = particleChar;//setting the last element of the shifted array to be a partlcle
                 }
-                else {
+                else
+                {
                     screen[row, columns - 1] = ' ';
                 }
-                
+
             }
         }
 
@@ -109,7 +113,7 @@ namespace TheGiraffeGame
 
             Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col] = '@';
             //lolo
-            while (true) 
+            while (true)
             {
                 Console.Clear();
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
@@ -124,13 +128,14 @@ namespace TheGiraffeGame
                 }
                 PrintMatrix(Screen);
                 particleMove(Screen);
-                if (isHit) {
+                if (isHit)
+                {
                     Console.WriteLine("Game over");
                     break;
                 }
                 Thread.Sleep(250);
             }
-            
+
         }
 
     }
