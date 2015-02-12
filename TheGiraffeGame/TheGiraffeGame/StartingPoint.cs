@@ -17,7 +17,7 @@ namespace TheGiraffeGame
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (GiraffesHeadVar.Col < columns - 1)
+                    if (GiraffesHeadVar.Col > 0)
                     {
                         Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = emptySpace;
                         Screen[GiraffesHeadVar.Col - 1, GiraffesHeadVar.Row] = giraffeHeadChar;
@@ -26,7 +26,7 @@ namespace TheGiraffeGame
                     break;
 
                 case ConsoleKey.DownArrow:
-                    if (GiraffesHeadVar.Col > 0)
+                    if (GiraffesHeadVar.Col < columns - 1)
                     {
                         Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = emptySpace;
                         Screen[GiraffesHeadVar.Col + 1, GiraffesHeadVar.Row] = giraffeHeadChar;
@@ -44,7 +44,7 @@ namespace TheGiraffeGame
             char particleChar = '#';
 
             Random numGenerator = new Random();
-            int particleY = numGenerator.Next(0, columns - 2);
+            int particleY = numGenerator.Next(0, columns);
             int particleX = screen.GetLength(1);
 
             for (int col = 0; col < columns; col++)
