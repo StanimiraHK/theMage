@@ -103,8 +103,8 @@ namespace TheGiraffeGame
             }
 
             Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = '@';
-
-            while (true)
+            //lolo
+            while (true) 
             {
                 Console.Clear();
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
