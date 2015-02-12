@@ -19,8 +19,8 @@ namespace TheGiraffeGame
                 case ConsoleKey.UpArrow:
                     if (GiraffesHeadVar.Col > 0)
                     {
-                        Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = emptySpace;
-                        Screen[GiraffesHeadVar.Col - 1, GiraffesHeadVar.Row] = giraffeHeadChar;
+                        Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row+1] = emptySpace;
+                        Screen[GiraffesHeadVar.Col - 1, GiraffesHeadVar.Row+1] = giraffeHeadChar;
                         GiraffesHeadVar.Col--;
                     }
                     break;
@@ -28,8 +28,8 @@ namespace TheGiraffeGame
                 case ConsoleKey.DownArrow:
                     if (GiraffesHeadVar.Col < columns - 1)
                     {
-                        Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row] = emptySpace;
-                        Screen[GiraffesHeadVar.Col + 1, GiraffesHeadVar.Row] = giraffeHeadChar;
+                        Screen[GiraffesHeadVar.Col, GiraffesHeadVar.Row+1] = emptySpace;
+                        Screen[GiraffesHeadVar.Col + 1, GiraffesHeadVar.Row+1] = giraffeHeadChar;
                         GiraffesHeadVar.Col++;
                     } break;
                 default:
