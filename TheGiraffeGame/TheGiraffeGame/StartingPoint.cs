@@ -11,29 +11,24 @@ namespace TheGiraffeGame
 
         private static void MoveHead(ConsoleKeyInfo keyinfo)
         {
-            char emptySpace = ' ';
             char giraffeHeadChar = '@';
 
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (GiraffesHeadVar.Row > 0)
+                    if (GiraffesHead.Row > 0)
                     {
-                        GiraffesHeadVar.Row--;
-                        Screen[GiraffesHeadVar.Row + 1, GiraffesHeadVar.Col] = emptySpace;//clearing heads last position if its next to a border
-                        Screen[GiraffesHeadVar.Row + 1, GiraffesHeadVar.Col + 1] = emptySpace;//clearing the heads last position
-                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] = giraffeHeadChar;
+                        GiraffesHead.Row--;
+                        Screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
 
                     }
                     break;
 
                 case ConsoleKey.DownArrow:
-                    if (GiraffesHeadVar.Row < rows - 1)
+                    if (GiraffesHead.Row < rows - 1)
                     {
-                        GiraffesHeadVar.Row++;
-                        Screen[GiraffesHeadVar.Row - 1, GiraffesHeadVar.Col] = emptySpace;//clearing heads last position if its next to a border
-                        Screen[GiraffesHeadVar.Row - 1, GiraffesHeadVar.Col + 1] = emptySpace;//clearing heads last position
-                        Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] = giraffeHeadChar;
+                        GiraffesHead.Row++;
+                        Screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
 
                     } break;
                 default:
@@ -41,46 +36,43 @@ namespace TheGiraffeGame
             }
         }
 
-        private static void particleMove(char[,] screen)
+        private static void particleMove(char[,] screen, List<Particle> particles)
         {
-            char emptySpace = ' ';
-            char giraffeHeadChar = '@';
             char particleChar = '#';
 
             Random numGenerator = new Random();
-            int particleY = numGenerator.Next(0, rows);
-            int particleX = screen.GetLength(1);
+            int particleRow = numGenerator.Next(0, rows);
+            particles.Add(new Particle(particleRow, columns - 1, particleChar));
 
-            for (int row = 0; row < rows; row++)
+            clearScreen(screen);
+
+            for (int i = 0; i < particles.Count; i++)
             {
-                for (int i = 0; i < columns - 1; i++)
-                {
-                    if (GiraffesHeadVar.Col == i)
-                    {
-                        if (screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] == '#')
-                        {//checks if the head of the giraffe is hit by a particle
-                            isHit = true;
-                            break;
-                        }
-                        screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col] = emptySpace;
-                        screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col + 1] = giraffeHeadChar;
-                    }
-                    screen[row, i] = screen[row, i + 1];//shifting the array on every row one index left example: {0,1,2,3,4} becomes {1,2,3,4,4}
-                }
-                if (particleX == columns && particleY == row)
-                {
-                    screen[row, columns - 1] = particleChar;//setting the last element of the shifted array to be a partlcle
-                }
-                else
-                {
-                    screen[row, columns - 1] = ' ';
-                }
+                int particleCol = particles[i].getCol();
+                particleRow = particles[i].getRow();
 
+                if (particleCol > 0 && particleRow < rows && particleRow > 0)
+                {
+
+                    if (particleRow == GiraffesHead.Row && particleCol == GiraffesHead.Col) {
+                        isHit = true;
+                        break;
+                    }
+
+                    screen[particleRow, particleCol] = particles[i].getSymbol();
+
+                    particleCol--;
+                    particles[i].setCol(particleCol);
+                }
+                else {
+                    particles.RemoveAt(i);
+                }
             }
         }
 
         private static void PrintMatrix(char[,] screen)
         {
+            Console.Clear();
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < columns; col++)
@@ -91,31 +83,35 @@ namespace TheGiraffeGame
             }
         }
 
-        public static char[,] Screen;
+        public static void clearScreen(char[,] screen)
+        {
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < columns; col++)
+                {
+                    screen[row, col] = ' ';
+                }
+            }
+            Screen[GiraffesHead.Row, GiraffesHead.Col] = '@';
+        }
 
-        public static GiraffesHead GiraffesHeadVar = new GiraffesHead(5, 20);
+
+        public static char[,] Screen;
+        public static GiraffesHead GiraffesHead;
         private static int rows = 20;
         private static int columns = 60;
         public static bool isHit = false;
 
         static void Main()
         {
+            List<Particle> particles = new List<Particle>();
             Screen = new Char[rows, columns];
+            GiraffesHead = new GiraffesHead(5, 20);
 
+            clearScreen(Screen);
 
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < columns; col++)
-                {
-                    Screen[row, col] = ' ';
-                }
-            }
-
-            Screen[GiraffesHeadVar.Row, GiraffesHeadVar.Col] = '@';
-            //lolo
             while (true)
             {
-                Console.Clear();
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
                 {
 
@@ -126,8 +122,8 @@ namespace TheGiraffeGame
                     }
                     MoveHead(pressedKey);
                 }
+                particleMove(Screen, particles);
                 PrintMatrix(Screen);
-                particleMove(Screen);
                 if (isHit)
                 {
                     Console.WriteLine("Game over");
