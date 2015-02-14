@@ -9,7 +9,7 @@ namespace TheGiraffeGame
     public class StartingPoint
     {
 
-        private static void MoveHead(ConsoleKeyInfo keyinfo)
+        private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
             char giraffeHeadChar = '@';
 
@@ -19,7 +19,7 @@ namespace TheGiraffeGame
                     if (GiraffesHead.Row > 0)
                     {
                         GiraffesHead.Row--;
-                        Screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
+                        screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
 
                     }
                     break;
@@ -28,7 +28,7 @@ namespace TheGiraffeGame
                     if (GiraffesHead.Row < rows - 1)
                     {
                         GiraffesHead.Row++;
-                        Screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
+                        screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
 
                     } break;
                 default:
@@ -36,20 +36,24 @@ namespace TheGiraffeGame
             }
         }
 
-        private static void particleMove(char[,] screen, List<Particle> particles)
-        {
+        private static void GenerateParticle(List<Particle> particles) {
             char particleChar = '#';
 
             Random numGenerator = new Random();
             int particleRow = numGenerator.Next(0, rows);
             particles.Add(new Particle(particleRow, columns - 1, particleChar));
+        }
+
+        private static void MoveParticles(char[,] screen, List<Particle> particles)
+        {
+            GenerateParticle(particles);
 
             clearScreen(screen);
 
             for (int i = 0; i < particles.Count; i++)
             {
                 int particleCol = particles[i].getCol();
-                particleRow = particles[i].getRow();
+                int particleRow = particles[i].getRow();
 
                 if (particleCol > 0 && particleRow < rows && particleRow > 0)
                 {
@@ -92,11 +96,10 @@ namespace TheGiraffeGame
                     screen[row, col] = ' ';
                 }
             }
-            Screen[GiraffesHead.Row, GiraffesHead.Col] = '@';
+            screen[GiraffesHead.Row, GiraffesHead.Col] = '@';
         }
 
 
-        public static char[,] Screen;
         public static GiraffesHead GiraffesHead;
         private static int rows = 20;
         private static int columns = 60;
@@ -105,7 +108,7 @@ namespace TheGiraffeGame
         static void Main()
         {
             List<Particle> particles = new List<Particle>();
-            Screen = new Char[rows, columns];
+            char[,] Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
 
             clearScreen(Screen);
@@ -120,9 +123,9 @@ namespace TheGiraffeGame
                     {                            // and readKey empties the queue
                         Console.ReadKey(true);
                     }
-                    MoveHead(pressedKey);
+                    MoveHead(pressedKey, Screen);
                 }
-                particleMove(Screen, particles);
+                MoveParticles(Screen, particles);
                 PrintMatrix(Screen);
                 if (isHit)
                 {
