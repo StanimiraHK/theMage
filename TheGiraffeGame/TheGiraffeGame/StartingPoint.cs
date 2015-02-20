@@ -12,8 +12,6 @@ using System.IO;
 namespace TheGiraffeGame
 {
     public class StartingPoint
-
-
     {
 
 
@@ -59,7 +57,8 @@ namespace TheGiraffeGame
             screen[GiraffesHead.Row - 2, GiraffesHead.Col - 4] = '^';
         }
 
-        private static void GenerateParticle(List<Particle> particles) {
+        private static void GenerateParticle(List<Particle> particles)
+        {
             char particleChar = '#';
 
             Random numGenerator = new Random();
@@ -81,7 +80,8 @@ namespace TheGiraffeGame
                 if (particleCol > 0 && particleRow < rows && particleRow > 0)
                 {
 
-                    if (particleRow == GiraffesHead.Row && particleCol == GiraffesHead.Col) {
+                    if (particleRow == GiraffesHead.Row && particleCol == GiraffesHead.Col)
+                    {
                         isHit = true;
                         break;
                     }
@@ -91,7 +91,8 @@ namespace TheGiraffeGame
                     particleCol--;
                     particles[i].setCol(particleCol);
                 }
-                else {
+                else
+                {
                     particles.RemoveAt(i);
                 }
             }
@@ -119,6 +120,7 @@ namespace TheGiraffeGame
                     screen[row, col] = ' ';
                 }
             }
+            Console.Clear();
             screen[GiraffesHead.Row, GiraffesHead.Col] = '@';
         }
 
@@ -131,19 +133,19 @@ namespace TheGiraffeGame
         static void Main()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            
+
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
-
-            clearScreen(Screen);
+            
+            //clearScreen(Screen);
             //Creating and starting a stopwatch as a way to get score
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
             while (true)
             {
-                
+
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
                 {
 
@@ -157,33 +159,35 @@ namespace TheGiraffeGame
                 MoveParticles(Screen, particles);
                 MoveNeck(Screen);
                 PrintMatrix(Screen);
-                
                 Console.WriteLine(@"            @@@@@@
            @    @ @
           @    @   @
          @    @     @
     ");
+                
                 if (isHit)
                 {
-                    Console.WriteLine("Game over");
+                    //Console.WriteLine("Game over");
                     stopwatch.Stop();
                     string score = stopwatch.Elapsed.ToString();
                     Console.WriteLine("Your managed to stay alive for: {0}",
         score);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
                     string player = Console.ReadLine();
-                    Console.WriteLine("Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
+                    Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
 
                     string savePath = Path.Combine(Environment.CurrentDirectory, player + ".txt"); //save to current directory
                     StreamWriter Writer = new StreamWriter(@savePath);
                     Writer.WriteLine("Player name: " + player + " | score: " + score);
-                    Writer.Close(); 
+                    Writer.Close();
+                    
                     break;
                 }
-                Thread.Sleep(250);
+                Thread.Sleep(150);
             }
 
-            
+
+
         }
 
     }
