@@ -36,6 +36,15 @@ namespace TheGiraffeGame
             }
         }
 
+        private static void MoveNeck(char[,] screen)
+        {
+            for (int i = GiraffesHead.Row; i < screen.GetLength(0) - 1; i++)
+            {
+                screen[i + 1, GiraffesHead.Col - 1] = 'M';
+                screen[i + 1, GiraffesHead.Col - 2] = 'M';
+            }
+        }
+
         private static void GenerateParticle(List<Particle> particles) {
             char particleChar = '#';
 
@@ -126,6 +135,7 @@ namespace TheGiraffeGame
                     MoveHead(pressedKey, Screen);
                 }
                 MoveParticles(Screen, particles);
+                MoveNeck(Screen);
                 PrintMatrix(Screen);
                 if (isHit)
                 {
