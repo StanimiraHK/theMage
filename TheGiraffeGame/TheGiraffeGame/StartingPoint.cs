@@ -6,6 +6,7 @@ using System.Threading;
 using System.Diagnostics;
 
 
+
 namespace TheGiraffeGame
 {
     public class StartingPoint
@@ -166,13 +167,14 @@ namespace TheGiraffeGame
                 {
                     Console.WriteLine("Game over");
                     stopwatch.Stop();
-
+                    string score = stopwatch.Elapsed.ToString();
                     Console.WriteLine("Your managed to stay alive for: {0}",
-        stopwatch.Elapsed);
+        score);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
                     string player = Console.ReadLine();
                     Console.WriteLine("Your score has been saved on your Desktop - {0}.txt", player);
                     break;
+                    ScoreToText(player, score);
                 }
                 Thread.Sleep(250);
             }
