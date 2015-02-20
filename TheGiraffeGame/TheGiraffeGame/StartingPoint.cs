@@ -18,7 +18,6 @@ namespace TheGiraffeGame
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
             char giraffeHeadChar = '@';
-
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
@@ -26,7 +25,6 @@ namespace TheGiraffeGame
                     {
                         GiraffesHead.Row--;
                         screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
-
                     }
                     break;
 
@@ -35,7 +33,6 @@ namespace TheGiraffeGame
                     {
                         GiraffesHead.Row++;
                         screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
-
                     } break;
                 default:
                     break;
@@ -59,11 +56,12 @@ namespace TheGiraffeGame
 
         private static void GenerateParticle(List<Particle> particles)
         {
-            char particleChar = '#';
-
+            char[] particleChar = {'#','Q'};
             Random numGenerator = new Random();
             int particleRow = numGenerator.Next(0, rows);
-            particles.Add(new Particle(particleRow, columns - 1, particleChar));
+            int particleGenerator = numGenerator.Next(0, 2);
+            char particle = particleChar[particleGenerator];
+            particles.Add(new Particle(particleRow, columns - 1, particle));
         }
 
         private static void MoveParticles(char[,] screen, List<Particle> particles)
@@ -129,11 +127,13 @@ namespace TheGiraffeGame
         private static int rows = 20;
         private static int columns = 60;
         public static bool isHit = false;
+        public static bool isFood = false;
+        //public static char particleBad = '#';
 
         static void Main()
         {
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
             Console.ForegroundColor = ConsoleColor.Yellow;
-
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
@@ -145,7 +145,7 @@ namespace TheGiraffeGame
 
             while (true)
             {
-
+                
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
                 {
 
@@ -156,6 +156,7 @@ namespace TheGiraffeGame
                     }
                     MoveHead(pressedKey, Screen);
                 }
+
                 MoveParticles(Screen, particles);
                 MoveNeck(Screen);
                 PrintMatrix(Screen);
@@ -165,18 +166,21 @@ namespace TheGiraffeGame
          @    @     @
     ");
                 
-                if (isHit)
+                if (isHit )
                 {
                     //Console.WriteLine("Game over");
                     stopwatch.Stop();
                     string score = stopwatch.Elapsed.ToString();
+
+                    //Saving the score to text file ->>>
                     Console.WriteLine("Your managed to stay alive for: {0}",
         score);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
                     string player = Console.ReadLine();
                     Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
+                    Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
 
-                    string savePath = Path.Combine(Environment.CurrentDirectory, player + ".txt"); //save to current directory
+                    string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
                     StreamWriter Writer = new StreamWriter(@savePath);
                     Writer.WriteLine("Player name: " + player + " | score: " + score);
                     Writer.Close();
@@ -186,7 +190,7 @@ namespace TheGiraffeGame
                 Thread.Sleep(150);
             }
 
-
+            
 
         }
 
