@@ -47,17 +47,24 @@ namespace CursorTest
 
         private static void MoveNeck(char[,] screen)
         {
-            for (int i = GiraffesHead.Row; i < screen.GetLength(0); i++)
+            char giraffeNeckChar = 'M';
+            for (int i = GiraffesHead.Row + 1; i < rows; i++)
             {
-                screen[i, GiraffesHead.Col - 3] = 'M';
-                screen[i, GiraffesHead.Col - 2] = 'M';
+                Console.SetCursorPosition(GiraffesHead.Col - 3, i);
+                Console.Write(giraffeNeckChar);
+                Console.SetCursorPosition(GiraffesHead.Col - 2, i);
+                Console.Write(giraffeNeckChar);
             }
-            screen[GiraffesHead.Row, GiraffesHead.Col - 1] = 'M';
-            screen[GiraffesHead.Row - 1, GiraffesHead.Col - 2] = 'O';
-            screen[GiraffesHead.Row - 1, GiraffesHead.Col - 3] = 'O';
-            screen[GiraffesHead.Row - 2, GiraffesHead.Col - 2] = '^';
-            screen[GiraffesHead.Row - 2, GiraffesHead.Col - 3] = '_';
-            screen[GiraffesHead.Row - 2, GiraffesHead.Col - 4] = '^';
+            Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 3);
+            Console.Write("      ");
+            Console.SetCursorPosition(GiraffesHead.Col - 1, GiraffesHead.Row - 1);
+            Console.Write(" ");
+            Console.SetCursorPosition(GiraffesHead.Col - 1, GiraffesHead.Row + 1);
+            Console.Write(" ");
+            Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 2);
+            Console.Write(@"  ^_^
+                 OO
+                 MMM");
         }
 
         private static void GenerateParticle(List<Particle> particles)
@@ -113,6 +120,7 @@ namespace CursorTest
 
         static void Main()
         {
+            Console.SetWindowSize(70, 25);
             Console.ForegroundColor = ConsoleColor.Yellow;
 
             List<Particle> particles = new List<Particle>();
