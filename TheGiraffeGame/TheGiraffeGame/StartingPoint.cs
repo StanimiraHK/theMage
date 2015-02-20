@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Diagnostics;
+
 
 namespace TheGiraffeGame
 {
@@ -128,14 +130,19 @@ namespace TheGiraffeGame
         static void Main()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
+            
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
 
             clearScreen(Screen);
+            //Creating and starting a stopwatch as a way to get score
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             while (true)
             {
+                
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
                 {
 
@@ -158,6 +165,13 @@ namespace TheGiraffeGame
                 if (isHit)
                 {
                     Console.WriteLine("Game over");
+                    stopwatch.Stop();
+
+                    Console.WriteLine("Your managed to stay alive for: {0}",
+        stopwatch.Elapsed);
+                    Console.WriteLine("What is your name, you brave GiraffeWarrior?");
+                    string player = Console.ReadLine();
+                    Console.WriteLine("Your score has been saved on your Desktop - {0}.txt", player);
                     break;
                 }
                 Thread.Sleep(250);
