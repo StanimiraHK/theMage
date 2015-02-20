@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
+
 
 
 
@@ -13,8 +15,6 @@ namespace TheGiraffeGame
 
 
     {
-
-
 
 
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
@@ -172,13 +172,18 @@ namespace TheGiraffeGame
         score);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
                     string player = Console.ReadLine();
-                    Console.WriteLine("Your score has been saved on your Desktop - {0}.txt", player);
+                    Console.WriteLine("Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
+
+                    string savePath = Path.Combine(Environment.CurrentDirectory, player + ".txt"); //save to current directory
+                    StreamWriter Writer = new StreamWriter(@savePath);
+                    Writer.WriteLine("Player name: " + player + " | score: " + score);
+                    Writer.Close(); 
                     break;
-                    ScoreToText(player, score);
                 }
                 Thread.Sleep(250);
             }
 
+            
         }
 
     }
