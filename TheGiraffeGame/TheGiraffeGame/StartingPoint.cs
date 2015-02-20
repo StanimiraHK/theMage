@@ -7,7 +7,12 @@ using System.Threading;
 namespace TheGiraffeGame
 {
     public class StartingPoint
+
+
     {
+
+
+
 
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
@@ -122,6 +127,7 @@ namespace TheGiraffeGame
 
         static void Main()
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
@@ -143,6 +149,7 @@ namespace TheGiraffeGame
                 MoveParticles(Screen, particles);
                 MoveNeck(Screen);
                 PrintMatrix(Screen);
+                
                 Console.WriteLine(@"            @@@@@@
            @    @ @
           @    @   @
