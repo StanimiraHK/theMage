@@ -5,17 +5,12 @@ using System.Text;
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
+using TheGiraffeGame;
 
-
-
-
-namespace TheGiraffeGame
+namespace CursorTest
 {
-    public class StartingPoint
-
-
+    class StartingPoint
     {
-
 
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
@@ -26,18 +21,24 @@ namespace TheGiraffeGame
                 case ConsoleKey.UpArrow:
                     if (GiraffesHead.Row > 2)
                     {
-                        GiraffesHead.Row--;
-                        screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
+                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+                        Console.Write(' ');
 
+                        GiraffesHead.Row--;
+                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+                        Console.Write(giraffeHeadChar);
                     }
                     break;
 
                 case ConsoleKey.DownArrow:
                     if (GiraffesHead.Row < rows - 1)
                     {
-                        GiraffesHead.Row++;
-                        screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
+                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+                        Console.Write(' ');
 
+                        GiraffesHead.Row++;
+                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+                        Console.Write("@");
                     } break;
                 default:
                     break;
@@ -59,91 +60,71 @@ namespace TheGiraffeGame
             screen[GiraffesHead.Row - 2, GiraffesHead.Col - 4] = '^';
         }
 
-        private static void GenerateParticle(List<Particle> particles) {
+        private static void GenerateParticle(List<Particle> particles)
+        {
             char particleChar = '#';
 
-            Random numGenerator = new Random();
             int particleRow = numGenerator.Next(0, rows);
             particles.Add(new Particle(particleRow, columns - 1, particleChar));
         }
 
-        private static void MoveParticles(char[,] screen, List<Particle> particles)
+        private static void MoveParticles(List<Particle> particles)
         {
             GenerateParticle(particles);
 
-            clearScreen(screen);
-
             for (int i = 0; i < particles.Count; i++)
             {
-                int particleCol = particles[i].getCol();
-                int particleRow = particles[i].getRow();
-
-                if (particleCol > 0 && particleRow < rows && particleRow > 0)
+                if (particles[i].getCol() > 0)
                 {
+                    Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
+                    Console.Write(' ');
 
-                    if (particleRow == GiraffesHead.Row && particleCol == GiraffesHead.Col) {
+                    int col = particles[i].getCol();
+                    col--;
+                    particles[i].setCol(col);
+                    if (particles[i].getRow() == GiraffesHead.Row && particles[i].getCol() == GiraffesHead.Col)
+                    {
                         isHit = true;
                         break;
                     }
-
-                    screen[particleRow, particleCol] = particles[i].getSymbol();
-
-                    particleCol--;
-                    particles[i].setCol(particleCol);
+                    Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
+                    Console.Write(particles[i].getSymbol());
                 }
-                else {
-                    particles.RemoveAt(i);
-                }
-            }
-        }
-
-        private static void PrintMatrix(char[,] screen)
-        {
-            Console.Clear();
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < columns; col++)
+                else
                 {
-                    Console.Write(screen[row, col]);
+                    Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
+                    Console.Write(' ');
+                    particles.Remove(particles[i]);
                 }
-                Console.WriteLine();
             }
         }
 
-        public static void clearScreen(char[,] screen)
+        private static void PrintHead()
         {
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < columns; col++)
-                {
-                    screen[row, col] = ' ';
-                }
-            }
-            screen[GiraffesHead.Row, GiraffesHead.Col] = '@';
+            Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+            Console.Write('@');
         }
-
 
         public static GiraffesHead GiraffesHead;
         private static int rows = 20;
         private static int columns = 60;
         public static bool isHit = false;
+        private static Random numGenerator = new Random();
 
         static void Main()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            
+
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
 
-            clearScreen(Screen);
             //Creating and starting a stopwatch as a way to get score
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
             while (true)
             {
-                
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
                 {
 
@@ -154,37 +135,31 @@ namespace TheGiraffeGame
                     }
                     MoveHead(pressedKey, Screen);
                 }
-                MoveParticles(Screen, particles);
+
+                PrintHead();
+                MoveParticles(particles);
                 MoveNeck(Screen);
-                PrintMatrix(Screen);
-                
-                Console.WriteLine(@"            @@@@@@
-           @    @ @
-          @    @   @
-         @    @     @
-    ");
+
                 if (isHit)
                 {
+                    Console.Clear();
                     Console.WriteLine("Game over");
                     stopwatch.Stop();
                     string score = stopwatch.Elapsed.ToString();
-                    Console.WriteLine("Your managed to stay alive for: {0}",
-        score);
+                    Console.WriteLine("Your managed to stay alive for: {0}", score);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
                     string player = Console.ReadLine();
-                    Console.WriteLine("Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
+                    Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
 
                     string savePath = Path.Combine(Environment.CurrentDirectory, player + ".txt"); //save to current directory
                     StreamWriter Writer = new StreamWriter(@savePath);
                     Writer.WriteLine("Player name: " + player + " | score: " + score);
-                    Writer.Close(); 
+                    Writer.Close();
                     break;
                 }
                 Thread.Sleep(250);
             }
 
-            
         }
-
     }
 }
