@@ -16,7 +16,7 @@ namespace TheGiraffeGame
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (GiraffesHead.Row > 0)
+                    if (GiraffesHead.Row > 2)
                     {
                         GiraffesHead.Row--;
                         screen[GiraffesHead.Row, GiraffesHead.Col] = giraffeHeadChar;
@@ -38,11 +38,17 @@ namespace TheGiraffeGame
 
         private static void MoveNeck(char[,] screen)
         {
-            for (int i = GiraffesHead.Row; i < screen.GetLength(0) - 1; i++)
+            for (int i = GiraffesHead.Row; i < screen.GetLength(0); i++)
             {
-                screen[i + 1, GiraffesHead.Col - 1] = 'M';
-                screen[i + 1, GiraffesHead.Col - 2] = 'M';
+                screen[i, GiraffesHead.Col - 3] = 'M';
+                screen[i, GiraffesHead.Col - 2] = 'M';
             }
+            screen[GiraffesHead.Row, GiraffesHead.Col - 1] = 'M';
+            screen[GiraffesHead.Row - 1, GiraffesHead.Col - 2] = 'O';
+            screen[GiraffesHead.Row - 1, GiraffesHead.Col - 3] = 'O';
+            screen[GiraffesHead.Row - 2, GiraffesHead.Col - 2] = '^';
+            screen[GiraffesHead.Row - 2, GiraffesHead.Col - 3] = '_';
+            screen[GiraffesHead.Row - 2, GiraffesHead.Col - 4] = '^';
         }
 
         private static void GenerateParticle(List<Particle> particles) {
@@ -137,6 +143,11 @@ namespace TheGiraffeGame
                 MoveParticles(Screen, particles);
                 MoveNeck(Screen);
                 PrintMatrix(Screen);
+                Console.WriteLine(@"            @@@@@@
+           @    @ @
+          @    @   @
+         @    @     @
+    ");
                 if (isHit)
                 {
                     Console.WriteLine("Game over");
