@@ -146,24 +146,12 @@ namespace CursorTest
                     Console.WriteLine("Game over");
                     stopwatch.Stop();
                     string score = stopwatch.Elapsed.ToString();
-<<<<<<< .mine
-                    Console.WriteLine("Your managed to stay alive for: {0}", score);
-
-
-
-=======
-
                     //Saving the score to text file ->>>
-                    Console.WriteLine("Your managed to stay alive for: {0}",
-        score);
->>>>>>> .theirs
+                    Console.WriteLine("Your managed to stay alive for: {0}", score);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
                     string player = Console.ReadLine();
-<<<<<<< .mine
                     Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
-=======
                     Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
->>>>>>> .theirs
 
                     string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
                     StreamWriter Writer = new StreamWriter(@savePath);
