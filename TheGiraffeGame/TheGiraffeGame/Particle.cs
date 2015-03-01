@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TheGiraffeGame
+﻿namespace TheGiraffeGame
 {
-    class Particle
+    public class Particle
     {
         private int col;
         private int row;
