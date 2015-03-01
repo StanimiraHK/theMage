@@ -167,10 +167,8 @@
         {
             bool isGoodParticle = (numGenerator.Next() % 5 == 0 ? true : false);
 
-            char particleChar = isGoodParticle ? 'Ơ' : '¤';//'#';
-
             int particleRow = numGenerator.Next(3, rows);
-            particles.Add(new Particle(particleRow, columns - 1, particleChar, isGoodParticle));
+            particles.Add(new Particle(particleRow, columns - 1, isGoodParticle));
         }
 
         private static void MoveParticles(List<Particle> particles)

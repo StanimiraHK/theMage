@@ -13,12 +13,12 @@
             set { isGood = value; }
         }
 
-        public Particle(int row, int col, char symbol, bool isGood)
+        public Particle(int row, int col, bool isGood)
         {
             this.row = row; 
             this.col = col;
-            this.symbol = symbol;
             this.isGood = isGood;
+            this.symbol = isGood ? 'Ơ' : '¤';
         }
         
         public int getCol(){
