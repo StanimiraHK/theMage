@@ -74,7 +74,7 @@
 
         private static void Exit()
         {
-            throw new NotImplementedException();
+            Environment.Exit(0);
         }
 
         private static void ShowMenu()
@@ -90,7 +90,7 @@
                          3. Choose difficulty
                          4. Leaderbord(Not implemented yet)
                          5. Customize giraffe(Not implemented yet)
-                         6. Exit (Not implemented yet)");
+                         6. Exit");
 
             Console.Write("Enter your choice: ");
             choice = int.Parse(Console.ReadLine());
