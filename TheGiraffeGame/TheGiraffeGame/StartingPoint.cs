@@ -96,7 +96,7 @@ namespace CursorTest
 
             for (int i = 0; i < particles.Count; i++)
             {
-                if (particles[i].getCol() > 4)
+                if (particles[i].getCol() > GiraffesHead.Col-1)
                 {
                     Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
                     Console.Write(' ');
@@ -197,7 +197,7 @@ namespace CursorTest
                     break;
                 }
 
-                Thread.Sleep(250);
+                Thread.Sleep(100);
             }
 
         }
