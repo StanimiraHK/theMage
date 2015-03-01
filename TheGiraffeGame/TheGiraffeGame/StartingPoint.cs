@@ -31,6 +31,71 @@
        @   @    @   @     
       @     @  @     @      ";
 
+        private static void ChooseLevel()
+        {
+            level = 0;
+            Console.SetCursorPosition(25, 8);
+            Console.WriteLine(@"CHOOSE LEVEL:
+                        - - - - - - - -
+                         EASY      - 1
+                         MEDIUM    - 2
+                         DIFFICULT - 3");
+            Console.SetCursorPosition(25, 13);
+            int choice = int.Parse(Console.ReadLine());
+            Console.Clear();
+            switch (choice)
+            {
+                case 1: level = 200; break;
+                case 2: level = 150; break;
+                case 3: level = 100; break;
+            }
+
+        }
+        private static void NewGame()
+        {
+            
+        }
+        private static void LoadGame()
+        {
+ 
+        }
+        private static void Leaderbord()
+        {
+ 
+        }
+        private static void CostomizeGiraffe()
+        {
+ 
+        }
+        private static void Exit()
+        {
+ 
+        }
+        private static void Menu()
+        {
+            int choise = 0;
+            Console.SetCursorPosition(25, 8);
+            Console.WriteLine(@"MENU:
+                        - - - - - - - -
+                         1. New Game
+                         2. Load Game
+                         3.Chose difficulty
+                         4.Leaderbord
+                         5.Costomize giraffe
+                         6.Exit");
+            choise = int.Parse(Console.ReadLine());
+            switch (choise)
+            {
+                case 1: NewGame(); break;
+                case 2: LoadGame(); break;
+                case 3: ChooseLevel(); break;
+                case 4: Leaderbord(); break;
+                case 5: CostomizeGiraffe(); break;
+                case 6: Exit(); break;
+
+            }
+        }
+
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
             char giraffeHeadChar = '@';
@@ -162,26 +227,6 @@
             Console.WriteLine(">>>  Apples eaten: {0}  <<<", apples);
         }
 
-        private static void ChooseLevel()
-        {
-            level = 0;
-            Console.SetCursorPosition(25, 8);
-            Console.WriteLine(@"CHOOSE LEVEL:
-                        - - - - - - - -
-                         EASY      - 1
-                         MEDIUM    - 2
-                         DIFFICULT - 3");
-            Console.SetCursorPosition(25, 13);
-            int choice = int.Parse(Console.ReadLine());
-            Console.Clear();
-            switch (choice)
-            {
-                case 1: level = 200; break;
-                case 2: level = 150; break;
-                case 3: level = 100; break;
-            }
-        }
-
         static void Main()
         {
             Console.SetWindowSize(70, 27);
@@ -231,19 +276,6 @@
                         stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
 
                     SaveScoreToTextFile();
-
-                    //To play again
-                    Console.WriteLine("Hey {0} do you wanna play again. Just press ENTER! Or any other button to close the game.", player);
-                    ConsoleKeyInfo pressedKey = Console.ReadKey(true);
-                    if (pressedKey.Key != ConsoleKey.Enter)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        isHit = false;
-                        Console.Clear();
-                    }
                 }
 
                 Thread.Sleep(level);
