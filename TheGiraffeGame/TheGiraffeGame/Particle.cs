@@ -13,11 +13,18 @@ namespace TheGiraffeGame
         private char symbol;
         private bool isGood;
 
-        public Particle(int row, int col, char symbol)
+        public bool IsGood
+        {
+            get { return isGood; }
+            set { isGood = value; }
+        }
+
+        public Particle(int row, int col, char symbol, bool isGood)
         {
             this.row = row; 
             this.col = col;
             this.symbol = symbol;
+            this.isGood = isGood;
         }
         
         public int getCol(){

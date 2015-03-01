@@ -69,10 +69,12 @@ namespace CursorTest
 
         private static void GenerateParticle(List<Particle> particles)
         {
-            char particleChar = '#';
+            bool isGoodParticle = (numGenerator.Next() % 5 == 0 ? true : false);
+
+            char particleChar = isGoodParticle ? 'Ơ' : '¤';//'#';
 
             int particleRow = numGenerator.Next(0, rows);
-            particles.Add(new Particle(particleRow, columns - 1, particleChar));
+            particles.Add(new Particle(particleRow, columns - 1, particleChar, isGoodParticle));
         }
 
         private static void MoveParticles(List<Particle> particles)
@@ -89,13 +91,27 @@ namespace CursorTest
                     int col = particles[i].getCol();
                     col--;
                     particles[i].setCol(col);
+
                     if (particles[i].getRow() == GiraffesHead.Row && particles[i].getCol() == GiraffesHead.Col)
                     {
-                        isHit = true;
-                        break;
+                        if (particles[i].IsGood)
+                        {
+                           // TODO: remove article and increase score
+                        }
+                        else
+                        {
+                            isHit = true;
+                            break;
+                        }
+
                     }
+
                     Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
+                    
+                    // If the particle is good it will be green, else it will be red
+                    Console.ForegroundColor = particles[i].IsGood? ConsoleColor.Green : ConsoleColor.Red;
                     Console.Write(particles[i].getSymbol());
+                    SetDefaultForegroundColor();
                 }
                 else
                 {
@@ -121,7 +137,8 @@ namespace CursorTest
         static void Main()
         {
             Console.SetWindowSize(70, 25);
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            SetDefaultForegroundColor();
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
 
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
@@ -154,6 +171,7 @@ namespace CursorTest
                     Console.WriteLine("Game over");
                     stopwatch.Stop();
                     string score = stopwatch.Elapsed.ToString();
+
                     //Saving the score to text file ->>>
                     Console.WriteLine("Your managed to stay alive for: {0}", score);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
@@ -167,9 +185,15 @@ namespace CursorTest
                     Writer.Close();
                     break;
                 }
+
                 Thread.Sleep(250);
             }
 
+        }
+
+        private static void SetDefaultForegroundColor()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
         }
     }
 }
