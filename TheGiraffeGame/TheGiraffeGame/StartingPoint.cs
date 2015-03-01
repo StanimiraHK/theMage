@@ -15,6 +15,9 @@
         public static GiraffesHead GiraffesHead;
         private static Random numGenerator = new Random();
 
+        private static List<Particle> Particles;
+        private static char[,] Screen;
+
         private static int rows = 20;
         private static int columns = 60;
 
@@ -33,6 +36,7 @@
 
         private static void ChooseLevel()
         {
+            Console.Clear();
             level = 0;
             Console.SetCursorPosition(25, 8);
             Console.WriteLine(@"CHOOSE LEVEL:
@@ -51,48 +55,58 @@
             }
 
         }
+
         private static void NewGame()
         {
-            
+            throw new NotImplementedException();
         }
+
         private static void LoadGame()
         {
- 
+            throw new NotImplementedException();
         }
+
         private static void Leaderbord()
         {
- 
+            throw new NotImplementedException();
         }
-        private static void CostomizeGiraffe()
+
+        private static void CustomizeGiraffe()
         {
- 
+            throw new NotImplementedException();
         }
+
         private static void Exit()
         {
- 
+            throw new NotImplementedException();
         }
-        private static void Menu()
+
+        private static void ShowMenu()
         {
-            int choise = 0;
+            int choice = 0;
             Console.SetCursorPosition(25, 8);
             Console.WriteLine(@"MENU:
                         - - - - - - - -
                          1. New Game
                          2. Load Game
-                         3.Chose difficulty
-                         4.Leaderbord
-                         5.Costomize giraffe
-                         6.Exit");
-            choise = int.Parse(Console.ReadLine());
-            switch (choise)
-            {
-                case 1: NewGame(); break;
-                case 2: LoadGame(); break;
-                case 3: ChooseLevel(); break;
-                case 4: Leaderbord(); break;
-                case 5: CostomizeGiraffe(); break;
-                case 6: Exit(); break;
+                         3. Choose difficulty
+                         4. Leaderbord
+                         5. Customize giraffe
+                         6. Exit");
 
+            Console.Write("Enter your choice: ");
+            choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1: NewGame(); Console.Clear(); break;
+                case 2: LoadGame(); Console.Clear(); break;
+                case 3: ChooseLevel(); Console.Clear(); break;
+                case 4: Leaderbord(); Console.Clear(); break;
+                case 5: CustomizeGiraffe(); Console.Clear(); break;
+                case 6: Exit(); break;
+                default:
+                    break;
             }
         }
 
@@ -233,15 +247,20 @@
             SetDefaultForegroundColor();
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
+            ShowMenu();
+            PlayGame();
 
-            List<Particle> particles = new List<Particle>();
-            char[,] Screen = new Char[rows, columns];
+        }
+
+        private static void PlayGame()
+        {
+            Particles = new List<Particle>();
+            Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
 
             //Creating and starting a stopwatch as a way to get score
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            ChooseLevel();
 
             while (true)
             {
@@ -253,13 +272,15 @@
                     {                            // and readKey empties the queue
                         Console.ReadKey(true);
                     }
+
                     MoveHead(pressedKey, Screen);
                 }
 
                 PrintHead();
-                MoveParticles(particles);
+                MoveParticles(Particles);
                 MoveNeck(Screen);
                 ShowRealtimeScore(ApplesEaten);
+
                 Console.SetCursorPosition(20, 19);
                 Console.WriteLine(GiraffesBody);
 
@@ -267,6 +288,7 @@
                 {
                     stopwatch.Stop();
                     Console.Clear();
+                    EmptyParticlesList();
                     Console.WriteLine("Game over");
                     Console.WriteLine("Your ate {0} apples!", ApplesEaten);
 
@@ -276,11 +298,16 @@
                         stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
 
                     SaveScoreToTextFile();
+                    break;
                 }
 
                 Thread.Sleep(level);
             }
+        }
 
+        private static void EmptyParticlesList()
+        {
+            Particles = new List<Particle>();
         }
 
         private static void SaveScoreToTextFile()
@@ -303,5 +330,7 @@
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
         }
+
+        public static int choice { get; set; }
     }
 }
