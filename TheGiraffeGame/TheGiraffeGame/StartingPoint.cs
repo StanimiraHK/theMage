@@ -11,7 +11,7 @@
 
     class StartingPoint
     {
-        public static string player = string.Empty;
+        public static string playerName = string.Empty;
         public static GiraffesHead GiraffesHead;
         private static Random numGenerator = new Random();
 
@@ -241,11 +241,15 @@
 
         static void Main()
         {
+            SetupConsole();
+            ShowMenu();
+        }
+
+        private static void SetupConsole()
+        {
             Console.SetWindowSize(70, 27);
             SetDefaultForegroundColor();
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-
-            ShowMenu();
         }
 
         private static void PlayGame()
@@ -312,15 +316,15 @@
             //Saving the score to text file ->>>
             Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
             Console.WriteLine(@"What is your name, you brave GiraffeWarrior? (score will be saved in TheGiraffeGame\bin\Debug directory)");
-            player = Console.ReadLine();
+            playerName = Console.ReadLine();
             
-
             string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
             using (StreamWriter Writer = new StreamWriter(@savePath))
             {
-                Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
+                Writer.WriteLine("Player name: " + playerName + " | score: " + timeAlive);
             }
-            Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
+
+            Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", playerName);
 
             Thread.Sleep(2000);
         }
@@ -329,7 +333,5 @@
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
         }
-
-        public static int choice { get; set; }
     }
 }
