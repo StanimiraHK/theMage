@@ -11,6 +11,12 @@ namespace CursorTest
 {
     class StartingPoint
     {
+        public static GiraffesHead GiraffesHead;
+        private static int rows = 20;
+        private static int columns = 60;
+        public static bool isHit = false;
+        private static Random numGenerator = new Random();
+        private static int ApplesEaten = 0;
 
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
@@ -19,7 +25,7 @@ namespace CursorTest
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (GiraffesHead.Row > 2)
+                    if (GiraffesHead.Row > 3)
                     {
                         Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
                         Console.Write(' ');
@@ -73,7 +79,7 @@ namespace CursorTest
 
             char particleChar = isGoodParticle ? 'Ơ' : '¤';//'#';
 
-            int particleRow = numGenerator.Next(0, rows);
+            int particleRow = numGenerator.Next(3, rows);
             particles.Add(new Particle(particleRow, columns - 1, particleChar, isGoodParticle));
         }
 
@@ -96,7 +102,8 @@ namespace CursorTest
                     {
                         if (particles[i].IsGood)
                         {
-                           // TODO: remove article and increase score
+                            ApplesEaten++;
+                            particles.Remove(particles[i]);
                         }
                         else
                         {
@@ -107,9 +114,9 @@ namespace CursorTest
                     }
 
                     Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
-                    
+
                     // If the particle is good it will be green, else it will be red
-                    Console.ForegroundColor = particles[i].IsGood? ConsoleColor.Green : ConsoleColor.Red;
+                    Console.ForegroundColor = particles[i].IsGood ? ConsoleColor.Green : ConsoleColor.Red;
                     Console.Write(particles[i].getSymbol());
                     SetDefaultForegroundColor();
                 }
@@ -128,11 +135,7 @@ namespace CursorTest
             Console.Write('@');
         }
 
-        public static GiraffesHead GiraffesHead;
-        private static int rows = 20;
-        private static int columns = 60;
-        public static bool isHit = false;
-        private static Random numGenerator = new Random();
+
 
         static void Main()
         {
@@ -167,13 +170,15 @@ namespace CursorTest
 
                 if (isHit)
                 {
+                    stopwatch.Stop();
                     Console.Clear();
                     Console.WriteLine("Game over");
-                    stopwatch.Stop();
-                    string score = stopwatch.Elapsed.ToString();
+                    Console.WriteLine("Your ate {0} apples!", ApplesEaten);
+
+                    string timeAlive = stopwatch.Elapsed.ToString();
 
                     //Saving the score to text file ->>>
-                    Console.WriteLine("Your managed to stay alive for: {0}", score);
+                    Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
                     Console.WriteLine("What is your name, you brave GiraffeWarrior?");
                     string player = Console.ReadLine();
                     Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
@@ -181,7 +186,7 @@ namespace CursorTest
 
                     string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
                     StreamWriter Writer = new StreamWriter(@savePath);
-                    Writer.WriteLine("Player name: " + player + " | score: " + score);
+                    Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
                     Writer.Close();
                     break;
                 }
