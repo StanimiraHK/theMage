@@ -12,12 +12,16 @@ namespace CursorTest
     class StartingPoint
     {
         public static GiraffesHead GiraffesHead;
+        private static Random numGenerator = new Random();
+
         private static int rows = 20;
         private static int columns = 60;
+
         public static bool isHit = false;
-        private static Random numGenerator = new Random();
+
         private static int ApplesEaten = 0;
         private static int level = 0;
+
         private static string timeAlive;
         private static string GiraffesBody = @"
          @@@@@@@@@@
@@ -39,6 +43,7 @@ namespace CursorTest
                         Console.Write(' ');
 
                         GiraffesHead.Row--;
+
                         Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
                         Console.Write(giraffeHeadChar);
                     }
@@ -66,9 +71,9 @@ namespace CursorTest
             {
                 Console.SetCursorPosition(GiraffesHead.Col - 3, i);
                 Console.Write(giraffeNeckChar);
-                Console.SetCursorPosition(GiraffesHead.Col - 2, i);
                 Console.Write(giraffeNeckChar);
             }
+
             Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 3);
             Console.Write("      ");
             Console.SetCursorPosition(GiraffesHead.Col - 1, GiraffesHead.Row - 1);
@@ -123,12 +128,7 @@ namespace CursorTest
                         }
                     }
 
-                    Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
-
-                    // If the particle is good it will be green, else it will be red
-                    Console.ForegroundColor = particles[i].IsGood ? ConsoleColor.Green : ConsoleColor.Red;
-                    Console.Write(particles[i].getSymbol());
-                    SetDefaultForegroundColor();
+                    DrawParticle(particles[i]);
                 }
                 else
                 {
@@ -137,6 +137,16 @@ namespace CursorTest
                     particles.Remove(particles[i]);
                 }
             }
+        }
+
+        private static void DrawParticle(Particle particle)
+        {
+            Console.SetCursorPosition(particle.getCol(), particle.getRow());
+
+            // If the particle is good it will be green, else it will be red
+            Console.ForegroundColor = particle.IsGood ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.Write(particle.getSymbol());
+            SetDefaultForegroundColor();
         }
 
         private static void PrintHead()
