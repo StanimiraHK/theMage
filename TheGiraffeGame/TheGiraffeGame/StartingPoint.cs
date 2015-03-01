@@ -22,8 +22,10 @@
 
         public static bool isHit = false;
 
+        private static int score = 0;
         private static int ApplesEaten = 0;
-        private static int level = 200;
+        private static int level = 250;
+        private static String currentLevel = Level.LevelOneName;
 
         private static string timeAlive;
         private static string GiraffesBody = @"
@@ -32,6 +34,7 @@
         @ @      @ @
        @   @    @   @     
       @     @  @     @      ";
+
 
         private static void ChooseLevel()
         {
@@ -48,13 +51,54 @@
             Console.Clear();
             switch (choice)
             {
-                case 1: level = 200; break;
+                case 1: level = 250; break;
                 case 2: level = 150; break;
                 case 3: level = 100; break;
             }
 
             ShowMenu();
         }
+
+        private static void LevelScoring(int level)
+        {
+            if (level <= 0)
+            {
+                level = 0;
+
+                if (level == 0)
+                {
+                    currentLevel = Level.LevelSixName;
+                    score += Level.LevelSixScore;
+                }
+
+            }
+            else if (level < 50)
+            {
+                currentLevel = Level.LevelFiveName;
+                score += Level.LevelFiveScore;
+            }
+            else if (level < 100)
+            {
+                currentLevel = Level.LevelFourName;
+                score += Level.LevelFourScore;
+            }
+            else if (level < 150)
+            {
+                currentLevel = Level.LevelThreeName;
+                score += Level.LevelThreeScore;
+            }
+            else if (level < 200)
+            {
+                currentLevel = Level.LevelTwoName; ;
+                score += Level.LevelTwoScore;
+            }
+            else
+            {
+                currentLevel = Level.LevelOneName;
+                score += Level.LevelOneScore;
+            }
+        }
+
 
         private static void LoadGame()
         {
@@ -97,8 +141,8 @@
             switch (choice)
             {
                 case 1: Console.Clear(); PlayGame(); break;
-                case 2: Console.Clear(); LoadGame();  break;
-                case 3: Console.Clear(); ChooseLevel();  break;
+                case 2: Console.Clear(); LoadGame(); break;
+                case 3: Console.Clear(); ChooseLevel(); break;
                 case 4: Console.Clear(); Leaderbord(); break;
                 case 5: Console.Clear(); CustomizeGiraffe(); break;
                 case 6: Console.Clear(); Exit(); break;
@@ -191,6 +235,8 @@
                         if (particles[i].IsGood)
                         {
                             ApplesEaten++;
+                            level -= 5;
+                            LevelScoring(level);
                             particles.Remove(particles[i]);
                             Console.BackgroundColor = ConsoleColor.Red;
                             ShowRealtimeScore(ApplesEaten);
@@ -233,7 +279,12 @@
         private static void ShowRealtimeScore(int apples)
         {
             Console.SetCursorPosition(45, 22);
+            Console.WriteLine(">>>  {0}  <<<",currentLevel);
+            Console.SetCursorPosition(45, 23);
+            Console.WriteLine(">>>  Score: {0}  <<<", score);
+            Console.SetCursorPosition(45, 24);
             Console.WriteLine(">>>  Apples eaten: {0}  <<<", apples);
+
         }
 
         static void Main()
@@ -313,7 +364,7 @@
             Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
             Console.WriteLine(@"What is your name, you brave GiraffeWarrior? (score will be saved in TheGiraffeGame\bin\Debug directory)");
             playerName = Console.ReadLine();
-            
+
             string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
             using (StreamWriter Writer = new StreamWriter(@savePath))
             {
@@ -322,7 +373,7 @@
 
             Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", playerName);
 
-            Thread.Sleep(2000);
+//            Thread.Sleep(2000);
         }
 
         private static void SetDefaultForegroundColor()
