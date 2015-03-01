@@ -17,6 +17,13 @@ namespace CursorTest
         public static bool isHit = false;
         private static Random numGenerator = new Random();
         private static int ApplesEaten = 0;
+        private static string timeAlive;
+        private static string GiraffesBody = @"
+         @@@@@@@@@@
+         @@@@@@@@@@
+        @ @      @ @
+       @   @    @   @     
+      @     @  @     @      "; 
 
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
@@ -89,7 +96,7 @@ namespace CursorTest
 
             for (int i = 0; i < particles.Count; i++)
             {
-                if (particles[i].getCol() > 0)
+                if (particles[i].getCol() > 4)
                 {
                     Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
                     Console.Write(' ');
@@ -104,16 +111,12 @@ namespace CursorTest
                         {
                             ApplesEaten++;
                             particles.Remove(particles[i]);
-                            Console.BackgroundColor = ConsoleColor.Red;
-                            ShowRealtimeScore(ApplesEaten);
-                            Console.ResetColor();
                         }
                         else
                         {
                             isHit = true;
                             break;
                         }
-
                     }
 
                     Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
@@ -136,12 +139,6 @@ namespace CursorTest
         {
             Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
             Console.Write('@');
-        }
-
-        private static void ShowRealtimeScore(int apples)
-        {
-            Console.SetCursorPosition(45, 22);
-            Console.WriteLine(">>>   SCORE: {0}   <<<", apples);
         }
 
         static void Main()
@@ -174,8 +171,9 @@ namespace CursorTest
                 PrintHead();
                 MoveParticles(particles);
                 MoveNeck(Screen);
-                ShowRealtimeScore(ApplesEaten);
-
+                Console.SetCursorPosition(20, 19);
+                Console.WriteLine(GiraffesBody);
+               
                 if (isHit)
                 {
                     stopwatch.Stop();
@@ -183,25 +181,30 @@ namespace CursorTest
                     Console.WriteLine("Game over");
                     Console.WriteLine("Your ate {0} apples!", ApplesEaten);
 
-                    string timeAlive = stopwatch.Elapsed.ToString();
+                    timeAlive = stopwatch.Elapsed.ToString();
 
-                    //Saving the score to text file ->>>
-                    Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
-                    Console.WriteLine("What is your name, you brave GiraffeWarrior?");
-                    string player = Console.ReadLine();
-                    Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
-                    Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
-
-                    string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
-                    StreamWriter Writer = new StreamWriter(@savePath);
-                    Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
-                    Writer.Close();
+                    SaveScoreToTextFile();
                     break;
                 }
 
                 Thread.Sleep(250);
             }
 
+        }
+
+        private static void SaveScoreToTextFile()
+        {
+            //Saving the score to text file ->>>
+            Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
+            Console.WriteLine("What is your name, you brave GiraffeWarrior?");
+            string player = Console.ReadLine();
+            Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
+            Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
+
+            string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
+            StreamWriter Writer = new StreamWriter(@savePath);
+            Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
+            Writer.Close();
         }
 
         private static void SetDefaultForegroundColor()
