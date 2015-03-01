@@ -16,7 +16,6 @@
         private static Random numGenerator = new Random();
 
         private static List<Particle> Particles;
-        private static char[,] Screen;
 
         private static int rows = 20;
         private static int columns = 60;
@@ -108,7 +107,7 @@
             }
         }
 
-        private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
+        private static void MoveHead(ConsoleKeyInfo keyinfo)
         {
             char giraffeHeadChar = '@';
 
@@ -142,7 +141,7 @@
             }
         }
 
-        private static void MoveNeck(char[,] screen)
+        private static void MoveNeck()
         {
             char giraffeNeckChar = 'M';
             for (int i = GiraffesHead.Row + 1; i < rows; i++)
@@ -255,7 +254,6 @@
         private static void PlayGame()
         {
             Particles = new List<Particle>();
-            Screen = new Char[rows, columns];
             GiraffesHead = new GiraffesHead(5, 20);
 
             //Creating and starting a stopwatch as a way to get score
@@ -273,12 +271,12 @@
                         Console.ReadKey(true);
                     }
 
-                    MoveHead(pressedKey, Screen);
+                    MoveHead(pressedKey);
                 }
 
                 PrintHead();
                 MoveParticles(Particles);
-                MoveNeck(Screen);
+                MoveNeck();
                 ShowRealtimeScore(ApplesEaten);
 
                 Console.SetCursorPosition(20, 19);
