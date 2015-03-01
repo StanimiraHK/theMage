@@ -24,7 +24,7 @@ namespace CursorTest
          @@@@@@@@@@
         @ @      @ @
        @   @    @   @     
-      @     @  @     @      "; 
+      @     @  @     @      ";
 
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
@@ -97,7 +97,7 @@ namespace CursorTest
 
             for (int i = 0; i < particles.Count; i++)
             {
-                if (particles[i].getCol() > GiraffesHead.Col-1)
+                if (particles[i].getCol() > GiraffesHead.Col - 1)
                 {
                     Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
                     Console.Write(' ');
@@ -148,7 +148,7 @@ namespace CursorTest
         private static void ShowRealtimeScore(int apples)
         {
             Console.SetCursorPosition(45, 22);
-            Console.WriteLine(">>>  SCORE {0}  <<<", apples);
+            Console.WriteLine(">>>  Apples eaten: {0}  <<<", apples);
         }
 
         private static void ChooseLevel()
@@ -173,7 +173,7 @@ namespace CursorTest
 
         static void Main()
         {
-            Console.SetWindowSize(70, 25);
+            Console.SetWindowSize(70, 27);
             SetDefaultForegroundColor();
             Console.OutputEncoding = System.Text.Encoding.Unicode;
             
@@ -206,7 +206,7 @@ namespace CursorTest
                 ShowRealtimeScore(ApplesEaten);
                 Console.SetCursorPosition(20, 19);
                 Console.WriteLine(GiraffesBody);
-               
+
                 if (isHit)
                 {
                     stopwatch.Stop();
@@ -214,7 +214,10 @@ namespace CursorTest
                     Console.WriteLine("Game over");
                     Console.WriteLine("Your ate {0} apples!", ApplesEaten);
 
-                    timeAlive = stopwatch.Elapsed.ToString();
+                    timeAlive = string.Format("{0}{1}{2}", 
+                        stopwatch.Elapsed.Hours == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 hour" : stopwatch.Elapsed.Hours + " hours"),
+                        stopwatch.Elapsed.Minutes == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 minute" : stopwatch.Elapsed.Minutes + " minutes"),
+                        stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
 
                     SaveScoreToTextFile();
                     break;
@@ -235,9 +238,10 @@ namespace CursorTest
             Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
 
             string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
-            StreamWriter Writer = new StreamWriter(@savePath);
-            Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
-            Writer.Close();
+            using (StreamWriter Writer = new StreamWriter(@savePath))
+            {
+                  Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
+            } 
         }
 
         private static void SetDefaultForegroundColor()
