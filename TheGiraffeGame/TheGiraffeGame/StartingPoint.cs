@@ -215,9 +215,10 @@ namespace CursorTest
             Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
 
             string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
-            StreamWriter Writer = new StreamWriter(@savePath);
-            Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
-            Writer.Close();
+            using (StreamWriter Writer = new StreamWriter(@savePath))
+            {
+                  Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
+            } 
         }
 
         private static void SetDefaultForegroundColor()
