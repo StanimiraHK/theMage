@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
-using System.IO;
-using TheGiraffeGame;
-
-namespace CursorTest
+﻿namespace CursorTest
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Diagnostics;
+    using System.IO;
+    using TheGiraffeGame;
+
     class StartingPoint
     {
         public static string player = string.Empty;
@@ -187,7 +187,7 @@ namespace CursorTest
             Console.SetWindowSize(70, 27);
             SetDefaultForegroundColor();
             Console.OutputEncoding = System.Text.Encoding.Unicode;
-            
+
 
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
@@ -225,7 +225,7 @@ namespace CursorTest
                     Console.WriteLine("Game over");
                     Console.WriteLine("Your ate {0} apples!", ApplesEaten);
 
-                    timeAlive = string.Format("{0}{1}{2}", 
+                    timeAlive = string.Format("{0}{1}{2}",
                         stopwatch.Elapsed.Hours == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 hour" : stopwatch.Elapsed.Hours + " hours"),
                         stopwatch.Elapsed.Minutes == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 minute" : stopwatch.Elapsed.Minutes + " minutes"),
                         stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
@@ -233,7 +233,7 @@ namespace CursorTest
                     SaveScoreToTextFile();
 
                     //To play again
-                    Console.WriteLine("Hey {0} do you wanna play again. Just press ENTER! Or any other button to close the game.",player);
+                    Console.WriteLine("Hey {0} do you wanna play again. Just press ENTER! Or any other button to close the game.", player);
                     ConsoleKeyInfo pressedKey = Console.ReadKey(true);
                     if (pressedKey.Key != ConsoleKey.Enter)
                     {
@@ -263,8 +263,8 @@ namespace CursorTest
             string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
             using (StreamWriter Writer = new StreamWriter(@savePath))
             {
-                  Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
-            } 
+                Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
+            }
         }
 
         private static void SetDefaultForegroundColor()
