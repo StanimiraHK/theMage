@@ -11,6 +11,7 @@ namespace CursorTest
 {
     class StartingPoint
     {
+        public static string player = string.Empty;
         public static GiraffesHead GiraffesHead;
         private static Random numGenerator = new Random();
 
@@ -230,7 +231,19 @@ namespace CursorTest
                         stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
 
                     SaveScoreToTextFile();
-                    break;
+
+                    //To play again
+                    Console.WriteLine("Hey {0} do you wanna play again. Just press ENTER! Or any other button to close the game.",player);
+                    ConsoleKeyInfo pressedKey = Console.ReadKey(true);
+                    if (pressedKey.Key != ConsoleKey.Enter)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        isHit = false;
+                        Console.Clear();
+                    }
                 }
 
                 Thread.Sleep(level);
@@ -243,7 +256,7 @@ namespace CursorTest
             //Saving the score to text file ->>>
             Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
             Console.WriteLine("What is your name, you brave GiraffeWarrior?");
-            string player = Console.ReadLine();
+            player = Console.ReadLine();
             Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
             Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
 
