@@ -18,6 +18,12 @@ namespace CursorTest
         private static Random numGenerator = new Random();
         private static int ApplesEaten = 0;
         private static string timeAlive;
+        private static string GiraffesBody = @"
+         @@@@@@@@@@
+         @@@@@@@@@@
+        @ @      @ @
+       @   @    @   @     
+      @     @  @     @      "; 
 
         private static void MoveHead(ConsoleKeyInfo keyinfo, char[,] screen)
         {
@@ -135,8 +141,6 @@ namespace CursorTest
             Console.Write('@');
         }
 
-
-
         static void Main()
         {
             Console.SetWindowSize(70, 25);
@@ -167,7 +171,9 @@ namespace CursorTest
                 PrintHead();
                 MoveParticles(particles);
                 MoveNeck(Screen);
-
+                Console.SetCursorPosition(20, 19);
+                Console.WriteLine(GiraffesBody);
+               
                 if (isHit)
                 {
                     stopwatch.Stop();
