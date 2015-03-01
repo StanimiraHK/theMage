@@ -17,6 +17,7 @@ namespace CursorTest
         public static bool isHit = false;
         private static Random numGenerator = new Random();
         private static int ApplesEaten = 0;
+        private static int level = 0;
         private static string timeAlive;
         private static string GiraffesBody = @"
          @@@@@@@@@@
@@ -150,11 +151,32 @@ namespace CursorTest
             Console.WriteLine(">>>  SCORE {0}  <<<", apples);
         }
 
+        private static void ChooseLevel()
+        {
+            level = 0;
+            Console.SetCursorPosition(25, 8);
+            Console.WriteLine(@"CHOOSE LEVEL:
+                        - - - - - - - -
+                         EASY      - 1
+                         MEDIUM    - 2
+                         DIFFICULT - 3");
+            Console.SetCursorPosition(25, 13);
+            int choice = int.Parse(Console.ReadLine());
+            Console.Clear();
+            switch (choice)
+            {
+                case 1: level = 200; break;
+                case 2: level = 150; break;
+                case 3: level = 100; break;
+            }
+        }
+
         static void Main()
         {
             Console.SetWindowSize(70, 25);
             SetDefaultForegroundColor();
             Console.OutputEncoding = System.Text.Encoding.Unicode;
+            
 
             List<Particle> particles = new List<Particle>();
             char[,] Screen = new Char[rows, columns];
@@ -163,6 +185,7 @@ namespace CursorTest
             //Creating and starting a stopwatch as a way to get score
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+            ChooseLevel();
 
             while (true)
             {
@@ -197,7 +220,7 @@ namespace CursorTest
                     break;
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(level);
             }
 
         }
