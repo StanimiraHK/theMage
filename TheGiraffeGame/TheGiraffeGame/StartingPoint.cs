@@ -147,12 +147,12 @@ namespace CursorTest
         private static void ShowRealtimeScore(int apples)
         {
             Console.SetCursorPosition(45, 22);
-            Console.WriteLine(">>>  SCORE {0}  <<<", apples);
+            Console.WriteLine(">>>  Apples eaten: {0}  <<<", apples);
         }
 
         static void Main()
         {
-            Console.SetWindowSize(70, 25);
+            Console.SetWindowSize(70, 27);
             SetDefaultForegroundColor();
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
