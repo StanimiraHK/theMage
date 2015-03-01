@@ -24,7 +24,7 @@
         public static bool isHit = false;
 
         private static int ApplesEaten = 0;
-        private static int level = 0;
+        private static int level = 200;
 
         private static string timeAlive;
         private static string GiraffesBody = @"
@@ -54,11 +54,7 @@
                 case 3: level = 100; break;
             }
 
-        }
-
-        private static void NewGame()
-        {
-            throw new NotImplementedException();
+            ShowMenu();
         }
 
         private static void LoadGame()
@@ -83,28 +79,30 @@
 
         private static void ShowMenu()
         {
+            Console.Clear();
+
             int choice = 0;
             Console.SetCursorPosition(25, 8);
             Console.WriteLine(@"MENU:
                         - - - - - - - -
                          1. New Game
-                         2. Load Game
+                         2. Load Game (Not implemented yet)
                          3. Choose difficulty
-                         4. Leaderbord
-                         5. Customize giraffe
-                         6. Exit");
+                         4. Leaderbord(Not implemented yet)
+                         5. Customize giraffe(Not implemented yet)
+                         6. Exit (Not implemented yet)");
 
             Console.Write("Enter your choice: ");
             choice = int.Parse(Console.ReadLine());
 
             switch (choice)
             {
-                case 1: NewGame(); Console.Clear(); break;
-                case 2: LoadGame(); Console.Clear(); break;
-                case 3: ChooseLevel(); Console.Clear(); break;
-                case 4: Leaderbord(); Console.Clear(); break;
-                case 5: CustomizeGiraffe(); Console.Clear(); break;
-                case 6: Exit(); break;
+                case 1: Console.Clear(); PlayGame(); break;
+                case 2: Console.Clear(); LoadGame();  break;
+                case 3: Console.Clear(); ChooseLevel();  break;
+                case 4: Console.Clear(); Leaderbord(); break;
+                case 5: Console.Clear(); CustomizeGiraffe(); break;
+                case 6: Console.Clear(); Exit(); break;
                 default:
                     break;
             }
@@ -248,8 +246,6 @@
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
             ShowMenu();
-            PlayGame();
-
         }
 
         private static void PlayGame()
@@ -287,8 +283,8 @@
                 if (isHit)
                 {
                     stopwatch.Stop();
-                    Console.Clear();
                     EmptyParticlesList();
+                    Console.Clear();
                     Console.WriteLine("Game over");
                     Console.WriteLine("Your ate {0} apples!", ApplesEaten);
 
@@ -298,7 +294,8 @@
                         stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
 
                     SaveScoreToTextFile();
-                    break;
+                    ShowMenu();
+                    return;
                 }
 
                 Thread.Sleep(level);
@@ -314,16 +311,18 @@
         {
             //Saving the score to text file ->>>
             Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
-            Console.WriteLine("What is your name, you brave GiraffeWarrior?");
+            Console.WriteLine(@"What is your name, you brave GiraffeWarrior? (score will be saved in TheGiraffeGame\bin\Debug directory)");
             player = Console.ReadLine();
-            Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
-            Console.WriteLine("Your score has been saved on your TheGiraffeGame\\bin\\Debug directory - Score.txt");
+            
 
             string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
             using (StreamWriter Writer = new StreamWriter(@savePath))
             {
                 Writer.WriteLine("Player name: " + player + " | score: " + timeAlive);
             }
+            Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", player);
+
+            Thread.Sleep(2000);
         }
 
         private static void SetDefaultForegroundColor()
