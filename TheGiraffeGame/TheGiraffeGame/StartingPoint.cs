@@ -111,6 +111,9 @@ namespace CursorTest
                         {
                             ApplesEaten++;
                             particles.Remove(particles[i]);
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            ShowRealtimeScore(ApplesEaten);
+                            Console.ResetColor();
                         }
                         else
                         {
@@ -139,6 +142,12 @@ namespace CursorTest
         {
             Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
             Console.Write('@');
+        }
+
+        private static void ShowRealtimeScore(int apples)
+        {
+            Console.SetCursorPosition(45, 22);
+            Console.WriteLine(">>>  SCORE {0}  <<<", apples);
         }
 
         static void Main()
@@ -171,6 +180,7 @@ namespace CursorTest
                 PrintHead();
                 MoveParticles(particles);
                 MoveNeck(Screen);
+                ShowRealtimeScore(ApplesEaten);
                 Console.SetCursorPosition(20, 19);
                 Console.WriteLine(GiraffesBody);
                
