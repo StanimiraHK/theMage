@@ -34,6 +34,7 @@
         @ @      @ @
        @   @    @   @     
       @     @  @     @      ";
+        private static string giraffesColor = "Yellow";
 
 
         private static void ChooseLevel()
@@ -112,7 +113,17 @@
 
         private static void CustomizeGiraffe()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Choose your favorite color from all this :");
+            Console.WriteLine("Yelow");
+            Console.WriteLine("Cyan");
+            Console.WriteLine("Blue");
+            Console.WriteLine("Green");
+            Console.WriteLine("Red");
+            Console.WriteLine("Gray");
+            giraffesColor = Console.ReadLine();
+            SetDefaultForegroundColor(giraffesColor);
+            Console.Clear();
+            PlayGame();
         }
 
         private static void Exit()
@@ -120,25 +131,52 @@
             Environment.Exit(0);
         }
 
-        private static void ShowMenu()
+        private static void InteractiveMenu()
         {
-            Console.Clear();
+            char arrowSymbol = '*';
+            int consoleCol= 23;
+            int consoleRow = 10;
+            while (true)
+            {
 
-            int choice = 0;
-            Console.SetCursorPosition(25, 8);
-            Console.WriteLine(@"MENU:
-                        - - - - - - - -
-                         1. New Game
-                         2. Load Game (Not implemented yet)
-                         3. Choose difficulty
-                         4. Leaderbord(Not implemented yet)
-                         5. Customize giraffe(Not implemented yet)
-                         6. Exit");
+                Console.CursorVisible = false;
+                Console.SetCursorPosition(consoleCol, consoleRow);
+                Console.WriteLine(arrowSymbol);
+                Console.SetCursorPosition(consoleCol, consoleRow);
+                ConsoleKeyInfo arrow = Console.ReadKey();
 
-            Console.Write("Enter your choice: ");
-            choice = int.Parse(Console.ReadLine());
+                if (consoleRow > 10 || consoleRow < 16)
+                {
 
-            switch (choice)
+                    if (arrow.Key == ConsoleKey.UpArrow)
+                    {
+                        Console.SetCursorPosition(consoleCol, consoleRow);
+                        Console.WriteLine(" ");
+
+                        consoleRow--;
+                    }
+                    else if (arrow.Key == ConsoleKey.DownArrow)
+                    {
+                        Console.SetCursorPosition(consoleCol, consoleRow);
+                        Console.WriteLine(" ");
+                        consoleRow++;
+                    }
+                }
+                if (consoleRow < 10)
+                {
+                    consoleRow = 15;
+                }
+                if (consoleRow > 15)
+                {
+                    consoleRow = 10;
+                }
+                if (arrow.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+            }
+
+            switch (consoleRow - 9)
             {
                 case 1: Console.Clear(); PlayGame(); break;
                 case 2: Console.Clear(); LoadGame(); break;
@@ -149,6 +187,22 @@
                 default:
                     break;
             }
+        }
+
+        private static void ShowMenu()
+        {
+            Console.Clear();
+
+            Console.SetCursorPosition(25, 8);
+            Console.WriteLine(@"MENU:
+                        - - - - - - - -
+                         New Game
+                         Load Game (Not implemented yet)
+                         Choose difficulty
+                         Leaderbord(Not implemented yet)
+                         Customize giraffe
+                         Exit");
+            InteractiveMenu();
         }
 
         private static void MoveHead(ConsoleKeyInfo keyinfo)
@@ -267,7 +321,7 @@
             // If the particle is good it will be green, else it will be red
             Console.ForegroundColor = particle.IsGood ? ConsoleColor.Green : ConsoleColor.Red;
             Console.Write(particle.getSymbol());
-            SetDefaultForegroundColor();
+            SetDefaultForegroundColor(giraffesColor);
         }
 
         private static void PrintHead()
@@ -296,7 +350,7 @@
         private static void SetupConsole()
         {
             Console.SetWindowSize(70, 27);
-            SetDefaultForegroundColor();
+            SetDefaultForegroundColor("Yellow");
             Console.OutputEncoding = System.Text.Encoding.Unicode;
         }
 
@@ -376,9 +430,23 @@
 //            Thread.Sleep(2000);
         }
 
-        private static void SetDefaultForegroundColor()
+        private static void SetDefaultForegroundColor(string color)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            switch (color)
+            {
+                case "Yellow":
+                case "yellow": Console.ForegroundColor = ConsoleColor.Yellow; break;
+                case "green":
+                case "Green": Console.ForegroundColor = ConsoleColor.Green; break;
+                case "Red":
+                case "red": Console.ForegroundColor = ConsoleColor.Red; break;
+                case "Blue":
+                case "blue": Console.ForegroundColor = ConsoleColor.Blue; break;
+                case "Cyan":
+                case "cyan": Console.ForegroundColor = ConsoleColor.Cyan; break;
+                case "Gray":
+                case "gray": Console.ForegroundColor = ConsoleColor.Gray; break;
+            }
         }
     }
 }
