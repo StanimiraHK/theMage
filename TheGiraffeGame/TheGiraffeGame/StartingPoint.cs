@@ -48,10 +48,11 @@
             Console.SetCursorPosition(25, 8);
             Console.WriteLine(@"CHOOSE LEVEL:
                         - - - - - - - -
-                         EASY      - 1
-                         MEDIUM    - 2
-                         DIFFICULT - 3");
-            Console.SetCursorPosition(25, 13);
+                         EASY       - 1
+                         MEDIUM     - 2
+                         DIFFICULT  - 3
+                         IMPOSSIBRU - 4");
+            Console.SetCursorPosition(25, 14);
             int choice = int.Parse(Console.ReadLine());
             Console.Clear();
             switch (choice)
@@ -59,6 +60,8 @@
                 case 1: level = 250; break;
                 case 2: level = 150; break;
                 case 3: level = 100; break;
+                case 4: level = 0; break;
+                default: break;
             }
 
             ShowMenu();
@@ -309,6 +312,11 @@
                         {
                             ApplesEaten++;
                             level -= 5;
+                            if (level<0)
+                            {
+                                level = 0;
+                            }
+
                             LevelScoring(level);
                             particles.Remove(particles[i]);
                             Console.BackgroundColor = ConsoleColor.Red;
