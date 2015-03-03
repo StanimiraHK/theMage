@@ -24,7 +24,7 @@
         private static int ApplesEaten = 0;
 
         private static int level = GlobalConstants.DefaultLevel;
-        private static String currentLevel = Level.LevelOneName;
+        private static String currentLevel = GlobalConstants.LevelOneName;
 
         private static string timeAlive;
         private static Stopwatch stopwatch;
@@ -42,10 +42,10 @@
 
             switch (choice + 1)
             {
-                case 1: level = 250; break;
-                case 2: level = 150; break;
-                case 3: level = 100; break;
-                case 4: level = 0; break;
+                case 1: level = 250; currentLevel = GlobalConstants.LevelOneName; break;
+                case 2: level = 150; currentLevel = GlobalConstants.LevelTwoName; break;
+                case 3: level = 100; currentLevel = GlobalConstants.LevelThreeName; break;
+                case 4: level = 0; currentLevel = GlobalConstants.LevelSixName; break;
                 default: break;
             }
 
@@ -60,35 +60,35 @@
 
                 if (level == 0)
                 {
-                    currentLevel = Level.LevelSixName;
-                    Score += Level.LevelSixScore;
+                    currentLevel = GlobalConstants.LevelSixName;
+                    Score += GlobalConstants.LevelSixScore;
                 }
 
             }
             else if (level < 50)
             {
-                currentLevel = Level.LevelFiveName;
-                Score += Level.LevelFiveScore;
+                currentLevel = GlobalConstants.LevelFiveName;
+                Score += GlobalConstants.LevelFiveScore;
             }
             else if (level < 100)
             {
-                currentLevel = Level.LevelFourName;
-                Score += Level.LevelFourScore;
+                currentLevel = GlobalConstants.LevelFourName;
+                Score += GlobalConstants.LevelFourScore;
             }
             else if (level < 150)
             {
-                currentLevel = Level.LevelThreeName;
-                Score += Level.LevelThreeScore;
+                currentLevel = GlobalConstants.LevelThreeName;
+                Score += GlobalConstants.LevelThreeScore;
             }
             else if (level < 200)
             {
-                currentLevel = Level.LevelTwoName; ;
-                Score += Level.LevelTwoScore;
+                currentLevel = GlobalConstants.LevelTwoName; ;
+                Score += GlobalConstants.LevelTwoScore;
             }
             else
             {
-                currentLevel = Level.LevelOneName;
-                Score += Level.LevelOneScore;
+                currentLevel = GlobalConstants.LevelOneName;
+                Score += GlobalConstants.LevelOneScore;
             }
         }
 
@@ -207,7 +207,7 @@
         {
             Console.Clear();
             SetDefaultForegroundColor();
-            
+
             var menuOptions = new string[]{ "New Game",
                                             "Load Game (Not implemented yet)",
                                             "Choose difficulty",
@@ -425,7 +425,9 @@
 
                     Console.Clear();
                     Console.WriteLine("Game over");
-                    Console.WriteLine("Your ate {0} apples!", ApplesEaten);
+                    Console.WriteLine("You reached {0}", currentLevel);
+                    Console.WriteLine("Your score is {0}", Score);
+                    Console.WriteLine("You ate {0} apples!", ApplesEaten);
 
                     timeAlive = ReturnFormatedTimeString(stopwatch);
 
@@ -482,7 +484,8 @@
         }
 
         private static void SetDefaultForegroundColor()
-        { Console.ForegroundColor = defaultColor;
+        {
+            Console.ForegroundColor = defaultColor;
         }
 
         private static void SetForegroundColor(string color)
