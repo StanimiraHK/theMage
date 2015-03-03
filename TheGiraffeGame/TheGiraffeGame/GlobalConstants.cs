@@ -2,11 +2,11 @@
 {
     public class GlobalConstants
     {
-        public  static const int rows = 20;
-        public  static const int columns = 60;
-        public static const int DefaultLevel = 250;
+        public const int rows = 20;
+        public const int columns = 60;
+        public const int DefaultLevel = 250;
 
-        public  static const string GiraffesBody = @"
+        public const string GiraffesBody = @"
          @@@@@@@@@@
          @@@@@@@@@@
         @ @      @ @

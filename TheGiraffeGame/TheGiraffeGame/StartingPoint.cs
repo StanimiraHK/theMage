@@ -1,4 +1,4 @@
-﻿namespace CursorTest
+﻿namespace TheGiraffeGame
 {
     using System;
     using System.Collections.Generic;
