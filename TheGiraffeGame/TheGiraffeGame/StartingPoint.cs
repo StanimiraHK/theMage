@@ -153,11 +153,14 @@
             }
         }
 
-        private static void InteractiveMenu()
+        private static int InteractiveMenu(int menuOptionsCount)
         {
             char arrowSymbol = '*';
             int consoleCol = 23;
-            int consoleRow = 10;
+            int startConsoleRow = 10;
+            int endConsoleRow = startConsoleRow + menuOptionsCount - 1;
+            int consoleRow = startConsoleRow;
+
             while (true)
             {
 
@@ -167,7 +170,7 @@
                 Console.SetCursorPosition(consoleCol, consoleRow);
                 ConsoleKeyInfo arrow = Console.ReadKey();
 
-                if (consoleRow > 10 || consoleRow < 16)
+                if (consoleRow > startConsoleRow || consoleRow < endConsoleRow)
                 {
 
                     if (arrow.Key == ConsoleKey.UpArrow)
@@ -184,30 +187,18 @@
                         consoleRow++;
                     }
                 }
-                if (consoleRow < 10)
+                if (consoleRow < startConsoleRow)
                 {
-                    consoleRow = 15;
+                    consoleRow = endConsoleRow;
                 }
-                if (consoleRow > 15)
+                if (consoleRow > endConsoleRow)
                 {
-                    consoleRow = 10;
+                    consoleRow = startConsoleRow;
                 }
                 if (arrow.Key == ConsoleKey.Enter)
                 {
-                    break;
+                    return consoleRow - startConsoleRow - 1;
                 }
-            }
-
-            switch (consoleRow - 9)
-            {
-                case 1: Console.Clear(); PlayGame(); break;
-                case 2: Console.Clear(); LoadGame(); break;
-                case 3: Console.Clear(); ChooseLevel(); break;
-                case 4: Console.Clear(); Leaderbord(); break;
-                case 5: Console.Clear(); CustomizeGiraffe(); break;
-                case 6: Console.Clear(); Exit(); break;
-                default:
-                    break;
             }
         }
 
@@ -224,7 +215,19 @@
                          Leaderbord(Not implemented yet)
                          Customize giraffe
                          Exit");
-            InteractiveMenu();
+            int choice = InteractiveMenu(6);
+
+            switch (choice)
+            {
+                case 1: Console.Clear(); PlayGame(); break;
+                case 2: Console.Clear(); LoadGame(); break;
+                case 3: Console.Clear(); ChooseLevel(); break;
+                case 4: Console.Clear(); Leaderbord(); break;
+                case 5: Console.Clear(); CustomizeGiraffe(); break;
+                case 6: Console.Clear(); Exit(); break;
+                default:
+                    break;
+            }
         }
 
         private static void MoveHead(ConsoleKeyInfo keyinfo)
@@ -312,7 +315,7 @@
                         {
                             ApplesEaten++;
                             level -= 5;
-                            if (level<0)
+                            if (level < 0)
                             {
                                 level = 0;
                             }
