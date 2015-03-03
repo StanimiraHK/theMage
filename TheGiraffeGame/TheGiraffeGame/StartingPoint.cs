@@ -25,7 +25,9 @@
 
         private static int Score = 0;
         private static int ApplesEaten = 0;
-        private static int level = 250;
+
+        private static int DefaultLevel = 250;
+        private static int level = DefaultLevel;
         private static String currentLevel = Level.LevelOneName;
 
         private static string timeAlive;
@@ -44,18 +46,11 @@
         private static void ChooseLevel()
         {
             Console.Clear();
-            level = 0;
-            Console.SetCursorPosition(25, 8);
-            Console.WriteLine(@"CHOOSE LEVEL:
-                        - - - - - - - -
-                         EASY       - 1
-                         MEDIUM     - 2
-                         DIFFICULT  - 3
-                         IMPOSSIBRU - 4");
-            Console.SetCursorPosition(25, 14);
-            int choice = int.Parse(Console.ReadLine());
-            Console.Clear();
-            switch (choice)
+            var levelOptions = new string[] { "Easy", "Medium", "Hard", "Impossibru" };
+            PrintMenu("Choose Level: ", levelOptions);
+            int choice = InteractiveMenu(levelOptions.Length);
+
+            switch (choice + 1)
             {
                 case 1: level = 250; break;
                 case 2: level = 150; break;
@@ -136,7 +131,7 @@
             }
         }
 
-        private static void CustomizeGiraffe()
+        private static void ShowCustomizeGiraffeMenu()
         {
             string[] colorOptions = new string[] { "Yellow", "Cyan", "Blue", "Green", "Red", "Gray" };
             PrintMenu("Choose your favorite color from all this :", colorOptions);
@@ -242,7 +237,7 @@
                 case 2: LoadGame(); break;
                 case 3: ChooseLevel(); break;
                 case 4: Leaderbord(); break;
-                case 5: CustomizeGiraffe(); break;
+                case 5: ShowCustomizeGiraffeMenu(); break;
                 case 6: Exit(); break;
                 default:
                     break;
@@ -463,6 +458,7 @@
             stopwatch.Reset();
             ApplesEaten = 0;
             Score = 0;
+            level = DefaultLevel;
         }
 
         private static string ReturnFormatedTimeString(Stopwatch stopwatch)
