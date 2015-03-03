@@ -217,20 +217,19 @@
         {
             Console.Clear();
             SetDefaultForegroundColor(defaultColor);
-            Console.SetCursorPosition(25, 8);
-            Console.WriteLine(@"MENU:
-                        - - - - - - - -
-                         New Game
-                         Load Game (Not implemented yet)
-                         Choose difficulty
-                         Leaderbord(Not implemented yet)
-                         Customize giraffe
-                         Exit");
+            
+            var menuOptions = new string[]{ "New Game",
+                                            "Load Game (Not implemented yet)",
+                                            "Choose difficulty",
+                                            "Leaderbord(Not implemented yet)",
+                                            "Customize giraffe",
+                                            "Exit"};
 
-            int choice = InteractiveMenu(6);
+            PrintMenu("Menu: ", menuOptions);
+
+            int choice = InteractiveMenu(menuOptions.Length);
 
             Console.Clear();
-
             switch (choice + 1)
             {
                 case 1: PlayGame(); break;
