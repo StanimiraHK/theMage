@@ -12,33 +12,23 @@
 
     class StartingPoint
     {
-        public static string playerName = string.Empty;
+        public static string playerName = "Anonymous";
         public static GiraffesHead GiraffesHead;
         private static Random numGenerator = new Random();
 
         private static List<Particle> Particles;
-
-        private static int rows = 20;
-        private static int columns = 60;
 
         public static bool isHit = false;
 
         private static int Score = 0;
         private static int ApplesEaten = 0;
 
-        private static int DefaultLevel = 250;
-        private static int level = DefaultLevel;
+        private static int level = GlobalConstants.DefaultLevel;
         private static String currentLevel = Level.LevelOneName;
 
         private static string timeAlive;
         private static Stopwatch stopwatch;
 
-        private static string GiraffesBody = @"
-         @@@@@@@@@@
-         @@@@@@@@@@
-        @ @      @ @
-       @   @    @   @     
-      @     @  @     @      ";
         private static string giraffesColor = "Yellow";
         private static ConsoleColor defaultColor = ConsoleColor.Yellow;
 
@@ -263,7 +253,7 @@
                     break;
 
                 case ConsoleKey.DownArrow:
-                    if (GiraffesHead.Row < rows - 1)
+                    if (GiraffesHead.Row < GlobalConstants.rows - 1)
                     {
                         Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
                         Console.Write(' ');
@@ -280,7 +270,7 @@
         private static void MoveNeck()
         {
             char giraffeNeckChar = 'M';
-            for (int i = GiraffesHead.Row + 1; i < rows; i++)
+            for (int i = GiraffesHead.Row + 1; i < GlobalConstants.rows; i++)
             {
                 Console.SetCursorPosition(GiraffesHead.Col - 3, i);
                 Console.Write(giraffeNeckChar);
@@ -303,8 +293,8 @@
         {
             bool isGoodParticle = (numGenerator.Next() % 5 == 0 ? true : false);
 
-            int particleRow = numGenerator.Next(3, rows);
-            particles.Add(new Particle(particleRow, columns - 1, isGoodParticle));
+            int particleRow = numGenerator.Next(3, GlobalConstants.rows);
+            particles.Add(new Particle(particleRow, GlobalConstants.columns - 1, isGoodParticle));
         }
 
         private static void MoveParticles(List<Particle> particles)
@@ -426,7 +416,7 @@
                 MoveParticles(Particles);
                 MoveNeck();
                 Console.SetCursorPosition(20, 19);
-                Console.WriteLine(GiraffesBody);
+                Console.WriteLine(GlobalConstants.GiraffesBody);
                 ShowRealtimeScore(ApplesEaten);
 
                 if (isHit) // Game over
@@ -457,7 +447,7 @@
             stopwatch.Reset();
             ApplesEaten = 0;
             Score = 0;
-            level = DefaultLevel;
+            level = GlobalConstants.DefaultLevel;
         }
 
         private static string ReturnFormatedTimeString(Stopwatch stopwatch)
