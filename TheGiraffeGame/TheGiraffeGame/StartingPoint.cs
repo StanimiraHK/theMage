@@ -23,12 +23,14 @@
 
         public static bool isHit = false;
 
-        private static int score = 0;
+        private static int Score = 0;
         private static int ApplesEaten = 0;
         private static int level = 250;
         private static String currentLevel = Level.LevelOneName;
 
         private static string timeAlive;
+        private static Stopwatch stopwatch;
+
         private static string GiraffesBody = @"
          @@@@@@@@@@
          @@@@@@@@@@
@@ -71,34 +73,34 @@
                 if (level == 0)
                 {
                     currentLevel = Level.LevelSixName;
-                    score += Level.LevelSixScore;
+                    Score += Level.LevelSixScore;
                 }
 
             }
             else if (level < 50)
             {
                 currentLevel = Level.LevelFiveName;
-                score += Level.LevelFiveScore;
+                Score += Level.LevelFiveScore;
             }
             else if (level < 100)
             {
                 currentLevel = Level.LevelFourName;
-                score += Level.LevelFourScore;
+                Score += Level.LevelFourScore;
             }
             else if (level < 150)
             {
                 currentLevel = Level.LevelThreeName;
-                score += Level.LevelThreeScore;
+                Score += Level.LevelThreeScore;
             }
             else if (level < 200)
             {
                 currentLevel = Level.LevelTwoName; ;
-                score += Level.LevelTwoScore;
+                Score += Level.LevelTwoScore;
             }
             else
             {
                 currentLevel = Level.LevelOneName;
-                score += Level.LevelOneScore;
+                Score += Level.LevelOneScore;
             }
         }
 
@@ -353,7 +355,7 @@
             Console.SetCursorPosition(45, 22);
             Console.WriteLine(">>>  {0}  <<<", currentLevel);
             Console.SetCursorPosition(45, 23);
-            Console.WriteLine(">>>  Score: {0}  <<<", score);
+            Console.WriteLine(">>>  Score: {0}  <<<", Score);
             Console.SetCursorPosition(45, 24);
             Console.WriteLine(">>>  Apples eaten: {0}  <<<", apples);
 
@@ -378,7 +380,7 @@
             GiraffesHead = new GiraffesHead(5, 20);
 
             //Creating and starting a stopwatch as a way to get score
-            Stopwatch stopwatch = new Stopwatch();
+            stopwatch = new Stopwatch();
             stopwatch.Start();
 
             while (true)
@@ -404,27 +406,42 @@
                 Console.WriteLine(GiraffesBody);
                 ShowRealtimeScore(ApplesEaten);
 
-                if (isHit)
+                if (isHit) // Game over
                 {
-                    isHit = false;
                     stopwatch.Stop();
-                    EmptyParticlesList();
+
                     Console.Clear();
                     Console.WriteLine("Game over");
                     Console.WriteLine("Your ate {0} apples!", ApplesEaten);
 
-                    timeAlive = string.Format("{0}{1}{2}",
-                        stopwatch.Elapsed.Hours == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 hour" : stopwatch.Elapsed.Hours + " hours"),
-                        stopwatch.Elapsed.Minutes == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 minute" : stopwatch.Elapsed.Minutes + " minutes"),
-                        stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
+                    timeAlive = ReturnFormatedTimeString(stopwatch);
 
                     SaveScoreToTextFile();
+                    ResetAllVariables();
                     ShowMenu();
+
                     return;
                 }
 
                 Thread.Sleep(level);
             }
+        }
+
+        private static void ResetAllVariables()
+        {
+            isHit = false;
+            EmptyParticlesList();
+            stopwatch.Reset();
+            ApplesEaten = 0;
+            Score = 0;
+        }
+
+        private static string ReturnFormatedTimeString(Stopwatch stopwatch)
+        {
+            return string.Format("{0}{1}{2}",
+               stopwatch.Elapsed.Hours == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 hour" : stopwatch.Elapsed.Hours + " hours"),
+               stopwatch.Elapsed.Minutes == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 minute" : stopwatch.Elapsed.Minutes + " minutes"),
+               stopwatch.Elapsed.Seconds == 0 ? string.Empty : (stopwatch.Elapsed.Hours == 1 ? "1 second" : stopwatch.Elapsed.Seconds + " seconds"));
         }
 
         private static void EmptyParticlesList()
@@ -452,20 +469,16 @@
 
         private static void SetDefaultForegroundColor(string color)
         {
-            switch (color)
+            switch (color.ToLower())
             {
-                case "Yellow":
                 case "yellow": Console.ForegroundColor = ConsoleColor.Yellow; break;
-                case "green":
                 case "Green": Console.ForegroundColor = ConsoleColor.Green; break;
-                case "Red":
                 case "red": Console.ForegroundColor = ConsoleColor.Red; break;
-                case "Blue":
                 case "blue": Console.ForegroundColor = ConsoleColor.Blue; break;
-                case "Cyan":
                 case "cyan": Console.ForegroundColor = ConsoleColor.Cyan; break;
-                case "Gray":
                 case "gray": Console.ForegroundColor = ConsoleColor.Gray; break;
+
+                default: break;
             }
         }
     }
