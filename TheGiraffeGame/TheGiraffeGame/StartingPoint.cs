@@ -241,7 +241,7 @@
             var menuOptions = new string[]{ "New Game",
                                             "Load Game (Not implemented yet)",
                                             "Choose difficulty",
-                                            "Leaderbord(Not implemented yet)",
+                                            "Leaderbord",
                                             "Customize giraffe",
                                             "Exit"};
 
