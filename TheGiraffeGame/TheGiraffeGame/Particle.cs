@@ -1,10 +1,30 @@
 ﻿namespace TheGiraffeGame
 {
+
     public class Particle
     {
         private int col;
+
+        public int Col
+        {
+            get { return col; }
+            set { col = value; }
+        }
         private int row;
+
+        public int Row
+        {
+            get { return row; }
+            set { row = value; }
+        }
         private char symbol;
+
+        public char Symbol
+        {
+            get { return symbol; }
+            set { symbol = value; }
+        }
+
         private bool isGood;
 
         public bool IsGood
@@ -20,25 +40,13 @@
             this.isGood = isGood;
             this.symbol = isGood ? 'Ơ' : '¤';
         }
-        
-        public int getCol(){
-            return col ;
-        }
 
-        public int getRow() {
-            return row;
-        }
+        public static Particle GenerateParticle()
+        {
+            bool isGoodParticle = (GlobalConstants.numGenerator.Next() % 5 == 0 ? true : false);
 
-        public char getSymbol() {
-            return symbol;
-        }
-
-        public void setCol(int col) {
-            this.col = col;
-        }
-
-        public void setRow(int row) {
-            this.row = row;
+            int particleRow = GlobalConstants.numGenerator.Next(3, GlobalConstants.rows);
+            return new Particle(particleRow, GlobalConstants.columns - 1, isGoodParticle);
         }
     }
 }

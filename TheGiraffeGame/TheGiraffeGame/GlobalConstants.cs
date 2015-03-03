@@ -1,5 +1,7 @@
 ﻿namespace TheGiraffeGame
 {
+    using System;
+
     public class GlobalConstants
     {
         public static readonly int LevelOneScore = 10;
@@ -15,6 +17,8 @@
         public static readonly string LevelFourName = "Level 4";
         public static readonly string LevelFiveName = "Level 5";
         public static readonly string LevelSixName = "Level 6";
+
+        public static Random numGenerator = new Random();
 
         public const int rows = 20;
         public const int columns = 60;

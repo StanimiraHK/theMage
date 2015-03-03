@@ -12,12 +12,10 @@
 
     class StartingPoint
     {
-
         private static string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
 
         public static string playerName = "Anonymous";
         public static GiraffesHead GiraffesHead;
-        private static Random numGenerator = new Random();
 
         private static List<Particle> Particles;
 
@@ -319,30 +317,21 @@
             Console.Write('@');
         }
 
-        private static void GenerateParticle(List<Particle> particles)
-        {
-            bool isGoodParticle = (numGenerator.Next() % 5 == 0 ? true : false);
-
-            int particleRow = numGenerator.Next(3, GlobalConstants.rows);
-            particles.Add(new Particle(particleRow, GlobalConstants.columns - 1, isGoodParticle));
-        }
-
         private static void MoveParticles(List<Particle> particles)
         {
-            GenerateParticle(particles);
+            particles.Add(Particle.GenerateParticle());
 
             for (int i = 0; i < particles.Count; i++)
             {
-                if (particles[i].getCol() > GiraffesHead.Col - 1)
+                
+                if (particles[i].Col > GiraffesHead.Col - 1)
                 {
-                    Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
+                    Console.SetCursorPosition(particles[i].Col, particles[i].Row);
                     Console.Write(' ');
 
-                    int col = particles[i].getCol();
-                    col--;
-                    particles[i].setCol(col);
+                    particles[i].Col--; 
 
-                    if (particles[i].getRow() == GiraffesHead.Row && particles[i].getCol() == GiraffesHead.Col)
+                    if (particles[i].Row == GiraffesHead.Row && particles[i].Col == GiraffesHead.Col)
                     {
                         if (particles[i].IsGood)
                         {
@@ -370,7 +359,7 @@
                 }
                 else
                 {
-                    Console.SetCursorPosition(particles[i].getCol(), particles[i].getRow());
+                    Console.SetCursorPosition(particles[i].Col, particles[i].Row);
                     Console.Write(' ');
                     particles.Remove(particles[i]);
                 }
@@ -379,11 +368,11 @@
 
         private static void DrawParticle(Particle particle)
         {
-            Console.SetCursorPosition(particle.getCol(), particle.getRow());
+            Console.SetCursorPosition(particle.Col, particle.Row);
 
             // If the particle is good it will be green, else it will be red
             Console.ForegroundColor = particle.IsGood ? ConsoleColor.Green : ConsoleColor.Red;
-            Console.Write(particle.getSymbol());
+            Console.Write(particle.Symbol);
             SetForegroundColor(giraffesColor);
         }
 
