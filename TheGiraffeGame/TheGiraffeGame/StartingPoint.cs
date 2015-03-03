@@ -64,7 +64,7 @@
                 default: break;
             }
 
-            ShowMenu();
+            ShowMainMenu();
         }
 
         private static void LevelScoring(int level)
@@ -118,19 +118,35 @@
             throw new NotImplementedException();
         }
 
+        private static void PrintMenu(string menuMessage, string[] menuOptions)
+        {
+            int cursorRow = 8;
+            Console.SetCursorPosition(25, cursorRow);
+            Console.WriteLine(menuMessage);
+            cursorRow++;
+
+            Console.SetCursorPosition(25, cursorRow);
+            Console.WriteLine();
+            cursorRow++;
+            foreach (var option in menuOptions)
+            {
+                Console.SetCursorPosition(25, cursorRow);
+                Console.WriteLine(option);
+                cursorRow++;
+            }
+        }
+
         private static void CustomizeGiraffe()
         {
-            Console.WriteLine("Choose your favorite color from all this :");
-            Console.WriteLine("Yellow");
-            Console.WriteLine("Cyan");
-            Console.WriteLine("Blue");
-            Console.WriteLine("Green");
-            Console.WriteLine("Red");
-            Console.WriteLine("Gray");
-            giraffesColor = Console.ReadLine();
+            string[] colorOptions = new string[] { "Yellow", "Cyan", "Blue", "Green", "Red", "Gray" };
+            PrintMenu("Choose your favorite color from all this :", colorOptions);
+
+            int choice = InteractiveMenu(colorOptions.Length);
+
+            giraffesColor = colorOptions[choice];
             SetDefaultForegroundColor(giraffesColor);
             Console.Clear();
-            PlayGame();
+            ShowMainMenu();
         }
 
         private static void Exit()
@@ -149,7 +165,7 @@
             else
             {
                 Console.CursorVisible = false;
-                ShowMenu();
+                ShowMainMenu();
             }
         }
 
@@ -197,15 +213,15 @@
                 }
                 if (arrow.Key == ConsoleKey.Enter)
                 {
-                    return consoleRow - startConsoleRow - 1;
+                    return consoleRow - startConsoleRow;
                 }
             }
         }
 
-        private static void ShowMenu()
+        private static void ShowMainMenu()
         {
             Console.Clear();
-
+            SetDefaultForegroundColor(defaultColor);
             Console.SetCursorPosition(25, 8);
             Console.WriteLine(@"MENU:
                         - - - - - - - -
@@ -215,16 +231,19 @@
                          Leaderbord(Not implemented yet)
                          Customize giraffe
                          Exit");
+
             int choice = InteractiveMenu(6);
 
-            switch (choice)
+            Console.Clear();
+
+            switch (choice + 1)
             {
-                case 1: Console.Clear(); PlayGame(); break;
-                case 2: Console.Clear(); LoadGame(); break;
-                case 3: Console.Clear(); ChooseLevel(); break;
-                case 4: Console.Clear(); Leaderbord(); break;
-                case 5: Console.Clear(); CustomizeGiraffe(); break;
-                case 6: Console.Clear(); Exit(); break;
+                case 1: PlayGame(); break;
+                case 2: LoadGame(); break;
+                case 3: ChooseLevel(); break;
+                case 4: Leaderbord(); break;
+                case 5: CustomizeGiraffe(); break;
+                case 6: Exit(); break;
                 default:
                     break;
             }
@@ -375,7 +394,7 @@
         static void Main()
         {
             SetupConsole();
-            ShowMenu();
+            ShowMainMenu();
         }
 
         private static void SetupConsole()
@@ -398,7 +417,6 @@
             {
                 if (Console.KeyAvailable) // true if a key press is available in the input stream
                 {
-
                     ConsoleKeyInfo pressedKey = Console.ReadKey(true); // reads the next key
                     while (Console.KeyAvailable) // flushes the input stream(the pressed keys are inserted in a queue
                     {                            // and readKey empties the queue
@@ -429,7 +447,7 @@
 
                     SaveScoreToTextFile();
                     ResetAllVariables();
-                    ShowMenu();
+                    ShowMainMenu();
 
                     return;
                 }
