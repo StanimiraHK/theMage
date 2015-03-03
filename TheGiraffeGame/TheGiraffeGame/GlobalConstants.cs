@@ -18,6 +18,10 @@
         public static readonly string LevelFiveName = "Level 5";
         public static readonly string LevelSixName = "Level 6";
 
+        public const string BackgroundSong = @"E:/MyMusicFile.mp3";
+        public const string EatAppleSong = @"E:/MyMusicFile.mp3";
+        public const string GameOverSong = @"E:/MyMusicFile.mp3";
+
         public static Random numGenerator = new Random();
 
         public const int rows = 20;

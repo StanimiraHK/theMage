@@ -9,10 +9,11 @@
     using System.Text;
     using System.Threading;
     using TheGiraffeGame;
+using WMPLib;
 
     class StartingPoint
     {
-        private static string savePath = @"I:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudh";// Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
+        private static string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
 
         public static string playerName = "Anonymous";
         public static GiraffesHead GiraffesHead;
@@ -32,6 +33,10 @@
 
         private static string giraffesColor = "Yellow";
         private static ConsoleColor defaultColor = ConsoleColor.Yellow;
+
+        private static MusicPlayer BackgroundPlayer;
+        private static MusicPlayer EatApplePlayer;
+        private static MusicPlayer GameOverPlayer;
 
         private static void ShowMainMenu()
         {
@@ -86,46 +91,55 @@
             catch (DirectoryNotFoundException)
             {
                 Console.WriteLine("The file path contains a directory that cannot be found!");
+                Thread.Sleep(2000);
             }
             catch (FileNotFoundException)
             {
                 Console.WriteLine("The file '{0}' was not found!", @savePath);
+                Thread.Sleep(2000);
             }
             catch (ArgumentNullException)
             {
                 Console.WriteLine("No file path is given!");
+                Thread.Sleep(2000);
             }
             catch (ArgumentException)
             {
                 Console.WriteLine("The entered file path is incorrect!");
+                Thread.Sleep(2000);
             }
             catch (PathTooLongException)
             {
                 Console.WriteLine("The entered file path is over the 248 characters maximum!");
+                Thread.Sleep(2000);
             }
             catch (UnauthorizedAccessException uae)
             {
                 Console.WriteLine(uae.Message);
+                Thread.Sleep(2000);
             }
             catch (SecurityException)
             {
                 Console.WriteLine("You don't have the required permission to access this file!");
+                Thread.Sleep(2000);
             }
             catch (NotSupportedException)
             {
                 Console.WriteLine("Invalid file path format!");
+                Thread.Sleep(2000);
             }
             catch (IOException ioe)
             {
                 Console.WriteLine(ioe.Message);
+                Thread.Sleep(2000);
             }
             catch (Exception e)
             {
                 Console.WriteLine("The process failed: {0}", e.ToString());
+                Thread.Sleep(2000);
             }
             finally
             {
-                Thread.Sleep(2000);
                 SetDefaultForegroundColor();
             }
 
@@ -467,6 +481,15 @@
             //Creating and starting a stopwatch as a way to get score
             stopwatch = new Stopwatch();
             stopwatch.Start();
+            //// Uncomment to enable Player
+            //BackgroundPlayer = new MusicPlayer();
+            //BackgroundPlayer.open(GlobalConstants.BackgroundSong);
+            //BackgroundPlayer.play();
+
+            //GameOverPlayer = new MusicPlayer();
+            //GameOverPlayer.open(GlobalConstants.GameOverSong, false);
+
+            bool isMute = false;
 
             while (true)
             {
@@ -477,6 +500,19 @@
                     {                            // and readKey empties the queue
                         Console.ReadKey(true);
                     }
+                    //// Uncomment to enable Player
+                    //if (pressedKey.Key == ConsoleKey.M)
+                    //{
+                    //    isMute = !isMute;
+                    //    if (isMute)
+                    //    {
+                    //        BackgroundPlayer.pause();
+                    //    }
+                    //    else
+                    //    {
+                    //        BackgroundPlayer.play();
+                    //    }
+                    //}
 
                     MoveHead(pressedKey);
                 }
@@ -492,6 +528,10 @@
                 if (isHit) // Game over
                 {
                     stopwatch.Stop();
+                    //// Uncomment to enable Player
+                    //BackgroundPlayer.stop();
+                    //GameOverPlayer.play();
+                    
 
                     Console.Clear();
                     Console.WriteLine("Game over");
@@ -503,6 +543,10 @@
 
                     SaveScoreToTextFile();
                     ResetAllVariables();
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey();
+                    //// Uncomment to enable Player
+                    // GameOverPlayer.stop();
                     ShowMainMenu();
 
                     return;
@@ -540,8 +584,11 @@
             //Saving the score to text file ->>>
             Console.WriteLine("You managed to stay alive for: {0}", timeAlive);
             Console.WriteLine(@"What is your name, you brave GiraffeWarrior? (score will be saved in TheGiraffeGame\bin\Debug directory)");
+            Console.Write("Your name: ");
+            Console.CursorVisible = true;
             playerName = Console.ReadLine();
-
+            Console.CursorVisible = false;
+            
             try
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -553,43 +600,51 @@
             }
             catch (DirectoryNotFoundException)
             {
-                Console.WriteLine("The file path contains a directory that cannot be found!");
+                Console.WriteLine("The file path contains a directory that cannot be found!"); 
+                Thread.Sleep(2000);
             }
             catch (FileNotFoundException)
             {
                 Console.WriteLine("The file '{0}' was not found!", @savePath);
+                Thread.Sleep(2000);
             }
             catch (ArgumentNullException)
             {
                 Console.WriteLine("No file path is given!");
+                Thread.Sleep(2000);
             }
             catch (ArgumentException)
             {
                 Console.WriteLine("The entered file path is incorrect!");
+                Thread.Sleep(2000);
             }
             catch (PathTooLongException)
             {
                 Console.WriteLine("The entered file path is over the 248 characters maximum!");
+                Thread.Sleep(2000);
             }
             catch (UnauthorizedAccessException uae)
             {
                 Console.WriteLine(uae.Message);
+                Thread.Sleep(2000);
             }
             catch (SecurityException)
             {
                 Console.WriteLine("You don't have the required permission to access this file!");
+                Thread.Sleep(2000);
             }
             catch (NotSupportedException)
             {
                 Console.WriteLine("Invalid file path format!");
+                Thread.Sleep(2000);
             }
             catch (IOException ioe)
             {
                 Console.WriteLine(ioe.Message);
+                Thread.Sleep(2000);
             }
             finally
             {
-                Thread.Sleep(2000);
                 SetDefaultForegroundColor();
             }
 
