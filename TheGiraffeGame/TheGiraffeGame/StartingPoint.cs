@@ -99,7 +99,7 @@
         private static void ShowCustomizeGiraffeMenu()
         {
             string[] colorOptions = new string[] { "Yellow", "Cyan", "Blue", "Green", "Red", "Gray" };
-            PrintMenu("Choose your favorite color from all this :", colorOptions);
+            PrintMenu("Choose your favorite color from all these :", colorOptions);
 
             int choice = InteractiveMenu(colorOptions.Length);
 
@@ -257,46 +257,47 @@
 
         private static void MoveHead(ConsoleKeyInfo keyinfo)
         {
-            char giraffeHeadChar = '@';
-
+            
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
                     if (GiraffesHead.Row > 3)
                     {
-                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
-                        Console.Write(' ');
-
-                        GiraffesHead.Row--;
-
-                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
-                        Console.Write(giraffeHeadChar);
+                        DrawMovedHead(-1);
                     }
                     break;
 
                 case ConsoleKey.DownArrow:
                     if (GiraffesHead.Row < GlobalConstants.rows - 1)
                     {
-                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
-                        Console.Write(' ');
-
-                        GiraffesHead.Row++;
-                        Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
-                        Console.Write("@");
+                        DrawMovedHead(1);
                     } break;
                 default:
                     break;
             }
         }
 
+        private static void DrawMovedHead(int movement)
+        {
+            Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+            Console.Write(' ');
+
+            GiraffesHead.Row+=movement;
+            Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+            Console.Write(GlobalConstants.giraffesMouthChar);
+            Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 2);
+            Console.Write(GlobalConstants.giraffesHead);
+        }
+
         private static void MoveNeck()
         {
-            char giraffeNeckChar = 'M';
+            SetForegroundColor(giraffesColor);
+           
             for (int i = GiraffesHead.Row + 1; i < GlobalConstants.rows; i++)
             {
                 Console.SetCursorPosition(GiraffesHead.Col - 3, i);
-                Console.Write(giraffeNeckChar);
-                Console.Write(giraffeNeckChar);
+                Console.Write(GlobalConstants.giraffesNeckChar);
+                Console.Write(GlobalConstants.giraffesNeckChar);
             }
 
             Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 3);
@@ -305,16 +306,16 @@
             Console.Write(" ");
             Console.SetCursorPosition(GiraffesHead.Col - 1, GiraffesHead.Row + 1);
             Console.Write(" ");
-            Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 2);
-            Console.Write(@"  ^_^
-                 OO
-                 MMM");
+
+            SetDefaultForegroundColor();
         }
 
-        private static void PrintHead()
+        private static void DrawGiraffesHead()
         {
             Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
-            Console.Write('@');
+            Console.Write(GlobalConstants.giraffesMouthChar);
+            Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 2);
+            Console.Write(GlobalConstants.giraffesHead);
         }
 
         private static void MoveParticles(List<Particle> particles)
@@ -344,7 +345,9 @@
 
                             LevelScoring(level);
                             particles.Remove(particles[i]);
-                            Console.BackgroundColor = ConsoleColor.Red;
+
+                            // blinking green to notify that the score raised
+                            Console.BackgroundColor = ConsoleColor.Green;
                             ShowRealtimeScore(ApplesEaten);
                             Console.ResetColor();
                         }
@@ -373,7 +376,7 @@
             // If the particle is good it will be green, else it will be red
             Console.ForegroundColor = particle.IsGood ? ConsoleColor.Green : ConsoleColor.Red;
             Console.Write(particle.Symbol);
-            SetForegroundColor(giraffesColor);
+            SetDefaultForegroundColor();
         }
 
         private static void ShowRealtimeScore(int apples)
@@ -425,11 +428,10 @@
 
 
                 SetForegroundColor(giraffesColor);
-                PrintHead();
+                DrawGiraffesHead();
                 MoveParticles(Particles);
                 MoveNeck();
-                Console.SetCursorPosition(20, 19);
-                Console.WriteLine(GlobalConstants.GiraffesBody);
+                DrawGiraffesBody();
                 ShowRealtimeScore(ApplesEaten);
 
                 if (isHit) // Game over
@@ -453,6 +455,14 @@
 
                 Thread.Sleep(level);
             }
+        }
+
+        private static void DrawGiraffesBody()
+        {
+            SetForegroundColor(giraffesColor);
+            Console.SetCursorPosition(20, 19);
+            Console.WriteLine(GlobalConstants.GiraffesBody);
+            SetDefaultForegroundColor();
         }
 
         private static void ResetAllVariables()

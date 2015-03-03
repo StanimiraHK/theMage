@@ -24,11 +24,18 @@
         public const int columns = 60;
         public const int DefaultLevel = 250;
 
+        public const char giraffesMouthChar = '@';
+        public const char giraffesNeckChar = 'M';
+        public const string giraffesHead = @"  ^_^
+                 OO
+                 MMM";
         public const string GiraffesBody = @"
          @@@@@@@@@@
          @@@@@@@@@@
         @ @      @ @
        @   @    @   @     
       @     @  @     @      ";
+
+       
     }
 }
