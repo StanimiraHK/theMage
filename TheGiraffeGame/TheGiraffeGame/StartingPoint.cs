@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading;
-    using System.Diagnostics;
-    using System.IO;
+
     using TheGiraffeGame;
-    
 
     class StartingPoint
     {
@@ -130,13 +130,28 @@
 
         private static void Exit()
         {
-            Environment.Exit(0);
+            Console.Clear();
+            Console.SetCursorPosition(10, Console.WindowHeight / 2);
+            Console.CursorVisible = true;
+
+            Console.Write("Are you sure you want to exit the game (y/n)? ");
+
+            string answer = Console.ReadLine();
+            if (answer.ToLower() == "y" || answer.ToLower() == "yes")
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.CursorVisible = false;
+                ShowMenu();
+            }
         }
 
         private static void InteractiveMenu()
         {
             char arrowSymbol = '*';
-            int consoleCol= 23;
+            int consoleCol = 23;
             int consoleRow = 10;
             while (true)
             {
@@ -336,7 +351,7 @@
         {
             SetDefaultForegroundColor(defaultColor);
             Console.SetCursorPosition(45, 22);
-            Console.WriteLine(">>>  {0}  <<<",currentLevel);
+            Console.WriteLine(">>>  {0}  <<<", currentLevel);
             Console.SetCursorPosition(45, 23);
             Console.WriteLine(">>>  Score: {0}  <<<", score);
             Console.SetCursorPosition(45, 24);
@@ -391,6 +406,7 @@
 
                 if (isHit)
                 {
+                    isHit = false;
                     stopwatch.Stop();
                     EmptyParticlesList();
                     Console.Clear();
@@ -419,7 +435,7 @@
         private static void SaveScoreToTextFile()
         {
             //Saving the score to text file ->>>
-            Console.WriteLine("Your managed to stay alive for: {0}", timeAlive);
+            Console.WriteLine("You managed to stay alive for: {0}", timeAlive);
             Console.WriteLine(@"What is your name, you brave GiraffeWarrior? (score will be saved in TheGiraffeGame\bin\Debug directory)");
             playerName = Console.ReadLine();
 
@@ -431,7 +447,7 @@
 
             Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", playerName);
 
-//            Thread.Sleep(2000);
+            //            Thread.Sleep(2000);
         }
 
         private static void SetDefaultForegroundColor(string color)
