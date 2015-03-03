@@ -40,7 +40,7 @@
        @   @    @   @     
       @     @  @     @      ";
         private static string giraffesColor = "Yellow";
-        private static string defaultColor = "Yellow";
+        private static ConsoleColor defaultColor = ConsoleColor.Yellow;
 
 
         private static void ChooseLevel()
@@ -139,7 +139,7 @@
             int choice = InteractiveMenu(colorOptions.Length);
 
             giraffesColor = colorOptions[choice];
-            SetDefaultForegroundColor(giraffesColor);
+            SetForegroundColor(giraffesColor);
             Console.Clear();
             ShowMainMenu();
         }
@@ -216,7 +216,7 @@
         private static void ShowMainMenu()
         {
             Console.Clear();
-            SetDefaultForegroundColor(defaultColor);
+            SetDefaultForegroundColor();
             
             var menuOptions = new string[]{ "New Game",
                                             "Load Game (Not implemented yet)",
@@ -364,7 +364,7 @@
             // If the particle is good it will be green, else it will be red
             Console.ForegroundColor = particle.IsGood ? ConsoleColor.Green : ConsoleColor.Red;
             Console.Write(particle.getSymbol());
-            SetDefaultForegroundColor(giraffesColor);
+            SetForegroundColor(giraffesColor);
         }
 
         private static void PrintHead()
@@ -375,7 +375,7 @@
 
         private static void ShowRealtimeScore(int apples)
         {
-            SetDefaultForegroundColor(defaultColor);
+            SetDefaultForegroundColor();
             Console.SetCursorPosition(45, 22);
             Console.WriteLine(">>>  {0}  <<<", currentLevel);
             Console.SetCursorPosition(45, 23);
@@ -394,7 +394,7 @@
         private static void SetupConsole()
         {
             Console.SetWindowSize(70, 27);
-            SetDefaultForegroundColor("Yellow");
+            SetForegroundColor("Yellow");
             Console.OutputEncoding = System.Text.Encoding.Unicode;
         }
 
@@ -421,7 +421,7 @@
                 }
 
 
-                SetDefaultForegroundColor(giraffesColor);
+                SetForegroundColor(giraffesColor);
                 PrintHead();
                 MoveParticles(Particles);
                 MoveNeck();
@@ -491,7 +491,11 @@
             //            Thread.Sleep(2000);
         }
 
-        private static void SetDefaultForegroundColor(string color)
+        private static void SetDefaultForegroundColor()
+        { Console.ForegroundColor = defaultColor;
+        }
+
+        private static void SetForegroundColor(string color)
         {
             switch (color.ToLower())
             {
