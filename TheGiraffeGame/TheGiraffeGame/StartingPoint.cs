@@ -12,6 +12,9 @@
 
     class StartingPoint
     {
+
+        private static string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
+
         public static string playerName = "Anonymous";
         public static GiraffesHead GiraffesHead;
         private static Random numGenerator = new Random();
@@ -100,7 +103,34 @@
 
         private static void Leaderbord()
         {
-            throw new NotImplementedException();
+            Dictionary<string, int> leaderboard = new Dictionary<string, int>();
+            try
+            {
+
+                using (StreamReader streamReader = new StreamReader(@savePath))
+                {
+                    while (streamReader.Peek() >= 0)
+                    {
+                        var playerScore = streamReader.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                        leaderboard.Add(playerScore[1], int.Parse(playerScore[3]));
+                        // Console.WriteLine("Player: {0} - {1}", playerScore[1], playerScore[3]);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+
+            var top10Players = leaderboard.OrderByDescending(s => s.Value).Take(10).ToArray();
+            string[] top10 = new string[top10Players.Length];
+
+            for (int i = 0; i < top10.Length; i++)
+            {
+                top10[i] = string.Format("{0}. {1} - {2}", i + 1, top10Players[i].Key, top10Players[i].Value);
+            }
+
+            PrintMenu("Highscores", top10);
         }
 
         private static void PrintMenu(string menuMessage, string[] menuOptions)
@@ -207,7 +237,7 @@
         {
             Console.Clear();
             SetDefaultForegroundColor();
-            
+
             var menuOptions = new string[]{ "New Game",
                                             "Load Game (Not implemented yet)",
                                             "Choose difficulty",
@@ -470,10 +500,9 @@
             Console.WriteLine(@"What is your name, you brave GiraffeWarrior? (score will be saved in TheGiraffeGame\bin\Debug directory)");
             playerName = Console.ReadLine();
 
-            string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
-            using (StreamWriter Writer = new StreamWriter(@savePath))
+            using (StreamWriter Writer = new StreamWriter(@savePath, true))
             {
-                Writer.WriteLine("Player name: " + playerName + " | score: " + timeAlive);
+                Writer.WriteLine("PlayerName: " + (playerName == string.Empty ? "Anonymous" : playerName) + " Score: " + Score);
             }
 
             Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", playerName);
@@ -482,7 +511,8 @@
         }
 
         private static void SetDefaultForegroundColor()
-        { Console.ForegroundColor = defaultColor;
+        {
+            Console.ForegroundColor = defaultColor;
         }
 
         private static void SetForegroundColor(string color)
