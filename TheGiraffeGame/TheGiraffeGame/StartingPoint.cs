@@ -35,6 +35,81 @@
         private static string giraffesColor = "Yellow";
         private static ConsoleColor defaultColor = ConsoleColor.Yellow;
 
+        private static void ShowMainMenu()
+        {
+            Console.Clear();
+            SetDefaultForegroundColor();
+
+            var menuOptions = new string[]{ "New Game",
+                                            "Choose difficulty",
+                                            "Leaderbord",
+                                            "Customize giraffe",
+                                            "Exit"};
+
+            PrintMenu("Menu: ", menuOptions);
+
+            int choice = InteractiveMenu(menuOptions.Length);
+
+            Console.Clear();
+            switch (choice + 1)
+            {
+                case 1: PlayGame(); break;
+                case 2: ChooseLevel(); break;
+                case 3: ShowLeaderbord(); break;
+                case 4: ShowCustomizeGiraffeMenu(); break;
+                case 5: Exit(); break;
+                default:
+                    break;
+            }
+        }
+
+        private static void ShowLeaderbord()
+        {
+            Dictionary<string, int> leaderboard = new Dictionary<string, int>();
+            try
+            {
+
+                using (StreamReader streamReader = new StreamReader(@savePath))
+                {
+                    while (streamReader.Peek() >= 0)
+                    {
+                        var playerScore = streamReader.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                        leaderboard.Add(playerScore[1], int.Parse(playerScore[3]));
+                        // Console.WriteLine("Player: {0} - {1}", playerScore[1], playerScore[3]);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+
+            var top10Players = leaderboard.OrderByDescending(s => s.Value).Take(10).ToArray();
+            string[] top10 = new string[top10Players.Length];
+
+            for (int i = 0; i < top10.Length; i++)
+            {
+                top10[i] = string.Format("{0}. {1} - {2}", i + 1, top10Players[i].Key, top10Players[i].Value);
+            }
+
+            PrintMenu("Highscores", top10);
+
+            Console.ReadKey();
+            ShowMainMenu();
+        }
+
+        private static void ShowCustomizeGiraffeMenu()
+        {
+            string[] colorOptions = new string[] { "Yellow", "Cyan", "Blue", "Green", "Red", "Gray" };
+            PrintMenu("Choose your favorite color from all this :", colorOptions);
+
+            int choice = InteractiveMenu(colorOptions.Length);
+
+            giraffesColor = colorOptions[choice];
+            SetForegroundColor(giraffesColor);
+            Console.Clear();
+            ShowMainMenu();
+        }
 
         private static void ChooseLevel()
         {
@@ -53,6 +128,26 @@
             }
 
             ShowMainMenu();
+        }
+
+        private static void Exit()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(10, Console.WindowHeight / 2);
+            Console.CursorVisible = true;
+
+            Console.Write("Are you sure you want to exit the game (y/n)? ");
+
+            string answer = Console.ReadLine();
+            if (answer.ToLower() == "y" || answer.ToLower() == "yes")
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.CursorVisible = false;
+                ShowMainMenu();
+            }
         }
 
         private static void LevelScoring(int level)
@@ -95,44 +190,6 @@
             }
         }
 
-
-        private static void LoadGame()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void Leaderbord()
-        {
-            Dictionary<string, int> leaderboard = new Dictionary<string, int>();
-            try
-            {
-
-                using (StreamReader streamReader = new StreamReader(@savePath))
-                {
-                    while (streamReader.Peek() >= 0)
-                    {
-                        var playerScore = streamReader.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                        leaderboard.Add(playerScore[1], int.Parse(playerScore[3]));
-                        // Console.WriteLine("Player: {0} - {1}", playerScore[1], playerScore[3]);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("The process failed: {0}", e.ToString());
-            }
-
-            var top10Players = leaderboard.OrderByDescending(s => s.Value).Take(10).ToArray();
-            string[] top10 = new string[top10Players.Length];
-
-            for (int i = 0; i < top10.Length; i++)
-            {
-                top10[i] = string.Format("{0}. {1} - {2}", i + 1, top10Players[i].Key, top10Players[i].Value);
-            }
-
-            PrintMenu("Highscores", top10);
-        }
-
         private static void PrintMenu(string menuMessage, string[] menuOptions)
         {
             int cursorRow = 8;
@@ -148,39 +205,6 @@
                 Console.SetCursorPosition(25, cursorRow);
                 Console.WriteLine(option);
                 cursorRow++;
-            }
-        }
-
-        private static void ShowCustomizeGiraffeMenu()
-        {
-            string[] colorOptions = new string[] { "Yellow", "Cyan", "Blue", "Green", "Red", "Gray" };
-            PrintMenu("Choose your favorite color from all this :", colorOptions);
-
-            int choice = InteractiveMenu(colorOptions.Length);
-
-            giraffesColor = colorOptions[choice];
-            SetForegroundColor(giraffesColor);
-            Console.Clear();
-            ShowMainMenu();
-        }
-
-        private static void Exit()
-        {
-            Console.Clear();
-            Console.SetCursorPosition(10, Console.WindowHeight / 2);
-            Console.CursorVisible = true;
-
-            Console.Write("Are you sure you want to exit the game (y/n)? ");
-
-            string answer = Console.ReadLine();
-            if (answer.ToLower() == "y" || answer.ToLower() == "yes")
-            {
-                Environment.Exit(0);
-            }
-            else
-            {
-                Console.CursorVisible = false;
-                ShowMainMenu();
             }
         }
 
@@ -230,36 +254,6 @@
                 {
                     return consoleRow - startConsoleRow;
                 }
-            }
-        }
-
-        private static void ShowMainMenu()
-        {
-            Console.Clear();
-            SetDefaultForegroundColor();
-
-            var menuOptions = new string[]{ "New Game",
-                                            "Load Game (Not implemented yet)",
-                                            "Choose difficulty",
-                                            "Leaderbord",
-                                            "Customize giraffe",
-                                            "Exit"};
-
-            PrintMenu("Menu: ", menuOptions);
-
-            int choice = InteractiveMenu(menuOptions.Length);
-
-            Console.Clear();
-            switch (choice + 1)
-            {
-                case 1: PlayGame(); break;
-                case 2: LoadGame(); break;
-                case 3: ChooseLevel(); break;
-                case 4: Leaderbord(); break;
-                case 5: ShowCustomizeGiraffeMenu(); break;
-                case 6: Exit(); break;
-                default:
-                    break;
             }
         }
 
@@ -317,6 +311,12 @@
             Console.Write(@"  ^_^
                  OO
                  MMM");
+        }
+
+        private static void PrintHead()
+        {
+            Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
+            Console.Write('@');
         }
 
         private static void GenerateParticle(List<Particle> particles)
@@ -385,12 +385,6 @@
             Console.ForegroundColor = particle.IsGood ? ConsoleColor.Green : ConsoleColor.Red;
             Console.Write(particle.getSymbol());
             SetForegroundColor(giraffesColor);
-        }
-
-        private static void PrintHead()
-        {
-            Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
-            Console.Write('@');
         }
 
         private static void ShowRealtimeScore(int apples)
