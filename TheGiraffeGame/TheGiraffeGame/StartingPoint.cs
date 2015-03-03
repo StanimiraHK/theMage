@@ -318,6 +318,14 @@
             Console.Write(GlobalConstants.giraffesHead);
         }
 
+        private static void DrawGiraffesBody()
+        {
+            SetForegroundColor(giraffesColor);
+            Console.SetCursorPosition(20, 19);
+            Console.WriteLine(GlobalConstants.GiraffesBody);
+            SetDefaultForegroundColor();
+        }
+
         private static void MoveParticles(List<Particle> particles)
         {
             particles.Add(Particle.GenerateParticle());
@@ -455,14 +463,6 @@
 
                 Thread.Sleep(level);
             }
-        }
-
-        private static void DrawGiraffesBody()
-        {
-            SetForegroundColor(giraffesColor);
-            Console.SetCursorPosition(20, 19);
-            Console.WriteLine(GlobalConstants.GiraffesBody);
-            SetDefaultForegroundColor();
         }
 
         private static void ResetAllVariables()
