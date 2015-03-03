@@ -5,14 +5,14 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Security;
     using System.Text;
     using System.Threading;
-
     using TheGiraffeGame;
 
     class StartingPoint
     {
-        private static string savePath = Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
+        private static string savePath = @"I:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudhI:\asudh";// Path.Combine(Environment.CurrentDirectory, "Score.txt"); //save to current directory
 
         public static string playerName = "Anonymous";
         public static GiraffesHead GiraffesHead;
@@ -66,20 +66,67 @@
             Dictionary<string, int> leaderboard = new Dictionary<string, int>();
             try
             {
-
+                Console.ForegroundColor = ConsoleColor.Red;
                 using (StreamReader streamReader = new StreamReader(@savePath))
                 {
                     while (streamReader.Peek() >= 0)
                     {
                         var playerScore = streamReader.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                        leaderboard.Add(playerScore[1], int.Parse(playerScore[3]));
-                        // Console.WriteLine("Player: {0} - {1}", playerScore[1], playerScore[3]);
+                        try
+                        {
+                            leaderboard.Add(playerScore[1], int.Parse(playerScore[3]));
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            Console.WriteLine("Score and player names are not in the correct format!");
+                        }
                     }
                 }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Console.WriteLine("The file path contains a directory that cannot be found!");
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("The file '{0}' was not found!", @savePath);
+            }
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("No file path is given!");
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("The entered file path is incorrect!");
+            }
+            catch (PathTooLongException)
+            {
+                Console.WriteLine("The entered file path is over the 248 characters maximum!");
+            }
+            catch (UnauthorizedAccessException uae)
+            {
+                Console.WriteLine(uae.Message);
+            }
+            catch (SecurityException)
+            {
+                Console.WriteLine("You don't have the required permission to access this file!");
+            }
+            catch (NotSupportedException)
+            {
+                Console.WriteLine("Invalid file path format!");
+            }
+            catch (IOException ioe)
+            {
+                Console.WriteLine(ioe.Message);
             }
             catch (Exception e)
             {
                 Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+            finally
+            {
+                Thread.Sleep(2000);
+                SetDefaultForegroundColor();
             }
 
             var top10Players = leaderboard.OrderByDescending(s => s.Value).Take(10).ToArray();
@@ -257,7 +304,7 @@
 
         private static void MoveHead(ConsoleKeyInfo keyinfo)
         {
-            
+
             switch (keyinfo.Key)
             {
                 case ConsoleKey.UpArrow:
@@ -282,7 +329,7 @@
             Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
             Console.Write(' ');
 
-            GiraffesHead.Row+=movement;
+            GiraffesHead.Row += movement;
             Console.SetCursorPosition(GiraffesHead.Col, GiraffesHead.Row);
             Console.Write(GlobalConstants.giraffesMouthChar);
             Console.SetCursorPosition(GiraffesHead.Col - 6, GiraffesHead.Row - 2);
@@ -292,7 +339,7 @@
         private static void MoveNeck()
         {
             SetForegroundColor(giraffesColor);
-           
+
             for (int i = GiraffesHead.Row + 1; i < GlobalConstants.rows; i++)
             {
                 Console.SetCursorPosition(GiraffesHead.Col - 3, i);
@@ -332,13 +379,13 @@
 
             for (int i = 0; i < particles.Count; i++)
             {
-                
+
                 if (particles[i].Col > GiraffesHead.Col - 1)
                 {
                     Console.SetCursorPosition(particles[i].Col, particles[i].Row);
                     Console.Write(' ');
 
-                    particles[i].Col--; 
+                    particles[i].Col--;
 
                     if (particles[i].Row == GiraffesHead.Row && particles[i].Col == GiraffesHead.Col)
                     {
@@ -495,14 +542,58 @@
             Console.WriteLine(@"What is your name, you brave GiraffeWarrior? (score will be saved in TheGiraffeGame\bin\Debug directory)");
             playerName = Console.ReadLine();
 
-            using (StreamWriter Writer = new StreamWriter(@savePath, true))
+            try
             {
-                Writer.WriteLine("PlayerName: " + (playerName == string.Empty ? "Anonymous" : playerName) + " Score: " + Score);
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                using (StreamWriter Writer = new StreamWriter(@savePath, true))
+                {
+                    Writer.WriteLine("PlayerName: " + (playerName == string.Empty ? "Anonymous" : playerName) + " Score: " + Score);
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Console.WriteLine("The file path contains a directory that cannot be found!");
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("The file '{0}' was not found!", @savePath);
+            }
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine("No file path is given!");
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("The entered file path is incorrect!");
+            }
+            catch (PathTooLongException)
+            {
+                Console.WriteLine("The entered file path is over the 248 characters maximum!");
+            }
+            catch (UnauthorizedAccessException uae)
+            {
+                Console.WriteLine(uae.Message);
+            }
+            catch (SecurityException)
+            {
+                Console.WriteLine("You don't have the required permission to access this file!");
+            }
+            catch (NotSupportedException)
+            {
+                Console.WriteLine("Invalid file path format!");
+            }
+            catch (IOException ioe)
+            {
+                Console.WriteLine(ioe.Message);
+            }
+            finally
+            {
+                Thread.Sleep(2000);
+                SetDefaultForegroundColor();
             }
 
             Console.WriteLine(@"Your score has been saved on your TheGiraffeGame\bin\Debug directory - {0}.txt", playerName);
-
-            //            Thread.Sleep(2000);
         }
 
         private static void SetDefaultForegroundColor()
