@@ -8,6 +8,7 @@
     using System.Diagnostics;
     using System.IO;
     using TheGiraffeGame;
+    
 
     class StartingPoint
     {
@@ -35,6 +36,7 @@
        @   @    @   @     
       @     @  @     @      ";
         private static string giraffesColor = "Yellow";
+        private static string defaultColor = "Yellow";
 
 
         private static void ChooseLevel()
@@ -114,7 +116,7 @@
         private static void CustomizeGiraffe()
         {
             Console.WriteLine("Choose your favorite color from all this :");
-            Console.WriteLine("Yelow");
+            Console.WriteLine("Yellow");
             Console.WriteLine("Cyan");
             Console.WriteLine("Blue");
             Console.WriteLine("Green");
@@ -332,6 +334,7 @@
 
         private static void ShowRealtimeScore(int apples)
         {
+            SetDefaultForegroundColor(defaultColor);
             Console.SetCursorPosition(45, 22);
             Console.WriteLine(">>>  {0}  <<<",currentLevel);
             Console.SetCursorPosition(45, 23);
@@ -377,13 +380,14 @@
                     MoveHead(pressedKey);
                 }
 
+
+                SetDefaultForegroundColor(giraffesColor);
                 PrintHead();
                 MoveParticles(Particles);
                 MoveNeck();
-                ShowRealtimeScore(ApplesEaten);
-
                 Console.SetCursorPosition(20, 19);
                 Console.WriteLine(GiraffesBody);
+                ShowRealtimeScore(ApplesEaten);
 
                 if (isHit)
                 {
